@@ -1,0 +1,21 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "TerraFirmaCraftNEIplugin",
+    "name": "TerraFirmaCraftNEIplugin",
+    "description": "${description}",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/${githuborg}/${modid}",
+    "updateUrl": "",
+    "authorList": [ "Dries007" ],
+    "credits": "For TerraFirmaCraft by bioxx & dunkleosteus",
+    "logoFile": "",
+    "screenshots": [],
+    "parent": "",
+    "requiredMods": [ "Forge", "terrafirmacraft", "NotEnoughItems"],
+    "dependencies": [ "terrafirmacraft" , "NotEnoughItems"],
+    "dependants": [ ],
+    "useDependencyInformation": true
+  }]
+}
