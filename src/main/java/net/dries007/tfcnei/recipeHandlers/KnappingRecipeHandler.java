@@ -150,6 +150,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     public void loadCraftingRecipes(ItemStack result)
     {
         for (IRecipe recipe : recipeList)
+        {
             if (Helper.areItemStacksEqual(result, recipe.getRecipeOutput()) && recipe.getRecipeSize() > 9 && recipe instanceof ShapedRecipesTFC)
             {
                 // START COPY CODE PART. FOR COMMENTS SEE loadCraftingRecipes
@@ -173,7 +174,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                             arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                         }
                     }
-                    else if (inStack.getItemDamage() == Short.MAX_VALUE)
+                    else if (inStack.getItemDamage() == Short.MAX_VALUE || result.getItemDamage() == inStack.getItemDamage())  // In this case match damage value of stone too.
                     {
                         ItemStack actualInput = null;
                         if (inStack.getItem() == TFCItems.FlatLeather) actualInput = new ItemStack(TFCItems.Leather);
@@ -185,7 +186,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                 }
                 // END COPY CODE PART
             }
-
+        }
     }
 
     @Override
