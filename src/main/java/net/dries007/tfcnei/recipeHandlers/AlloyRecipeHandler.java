@@ -159,7 +159,7 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
 
         public CachedAlloyRecipe(Alloy recipe)
         {
-            outItem = new PositionedStack(new ItemStack[]{new ItemStack(recipe.outputType.MeltedItem), new ItemStack(recipe.outputType.Ingot)}, 10, 10);
+            outItem = new PositionedStack(new ItemStack(recipe.outputType.MeltedItem), 10, 10);
             int x = SPACING / 2;
             for (AlloyMetal alloyMetal : recipe.AlloyIngred)
             {
@@ -206,20 +206,22 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
         @Override
         public List<PositionedStack> getIngredients()
         {
-            for (PositionedStack positionedStack : ingredients) randomRenderPermutation(positionedStack, cycleticks / 12);
+            for (PositionedStack positionedStack : ingredients) positionedStack.setPermutationToRender(cycleticks / 24 % positionedStack.items.length);
             return ingredients;
         }
 
         @Override
         public PositionedStack getResult()
         {
-            randomRenderPermutation(outItem, cycleticks / 12);
             return outItem;
         }
 
         public void drawExtras()
         {
             FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+            Helper.drawCenteredString(fr, "Min: ", 20, 30, 0x000000);
+            Helper.drawCenteredString(fr, "Max: ", 20, 40, 0x000000);
+
             Helper.drawCenteredString(fr, tech, 80, 0, 0x820093);
             int x = 16;
             for (String min1 : min) fr.drawString(min1, x += SPACING, 30, 0x000000);
