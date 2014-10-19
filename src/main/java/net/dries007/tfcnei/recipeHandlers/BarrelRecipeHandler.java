@@ -203,7 +203,8 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
     public void drawExtras(int recipe)
     {
         super.drawExtras(recipe);
-        Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) arecipes.get(recipe)).techLvlString(), 80, 10, 0x820093);
+        CachedRecipe cr = arecipes.get(recipe);
+        if (cr instanceof CachedBarrelRecipe) Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) cr).techLvlString(), 80, 10, 0x820093);
     }
 
     public class CachedBarrelRecipe extends CachedRecipe

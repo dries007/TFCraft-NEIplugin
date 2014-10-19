@@ -189,7 +189,8 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
     public void drawExtras(int recipe)
     {
         super.drawExtras(recipe);
-        Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedAnvilRecipe) arecipes.get(recipe)).anvilReq, 80, -3, 0x820093);
+        CachedRecipe cr = arecipes.get(recipe);
+        if (cr instanceof CachedAnvilRecipe) Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedAnvilRecipe) cr).anvilReq, 80, -3, 0x820093);
     }
 
     public static enum TYPE

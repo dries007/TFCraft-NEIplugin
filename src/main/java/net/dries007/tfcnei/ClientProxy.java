@@ -74,5 +74,8 @@ public class ClientProxy extends CommonProxy
 
         API.registerRecipeHandler(new BarrelRecipeHandler());
         API.registerUsageHandler(new BarrelRecipeHandler());
+
+        API.registerRecipeHandler(new AlloyRecipeHandler());
+        API.registerUsageHandler(new AlloyRecipeHandler());
     }
 }
