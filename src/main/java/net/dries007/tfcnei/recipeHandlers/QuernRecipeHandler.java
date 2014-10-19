@@ -43,6 +43,7 @@ import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.QuernManager;
 import com.bioxx.tfc.api.Crafting.QuernRecipe;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.dries007.tfcnei.util.Helper;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
@@ -94,7 +95,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
     public void loadCraftingRecipes(ItemStack result)
     {
         for (QuernRecipe recipe : recipeList)
-            if (recipe.getResult().isItemEqual(result))
+            if (Helper.areItemStacksEqual(result, recipe.getResult()))
                 arecipes.add(new CachedQuernRecipe(recipe));
     }
 
@@ -102,7 +103,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
     public void loadUsageRecipes(ItemStack ingredient)
     {
         for (QuernRecipe recipe : recipeList)
-            if (ingredient.getItem() == TFCItems.Quern || recipe.getInItem().isItemEqual(ingredient))
+            if (ingredient.getItem() == TFCItems.Quern || Helper.areItemStacksEqual(ingredient, recipe.getInItem()))
                 arecipes.add(new CachedQuernRecipe(recipe));
     }
 

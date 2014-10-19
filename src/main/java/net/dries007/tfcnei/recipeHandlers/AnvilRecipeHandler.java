@@ -47,7 +47,6 @@ import com.bioxx.tfc.api.Crafting.AnvilRecipe;
 import com.bioxx.tfc.api.Crafting.AnvilReq;
 import net.dries007.tfcnei.util.Helper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
@@ -111,8 +110,8 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
     @Override
     public void loadCraftingRecipes(ItemStack result)
     {
-        for (AnvilRecipe recipe : recipeList) if (recipe.getCraftingResult().isItemEqual(result)) arecipes.add(new CachedAnvilRecipe(NORMAL, recipe));
-        for (AnvilRecipe recipe : weldRecipeList) if (recipe.getCraftingResult().isItemEqual(result)) arecipes.add(new CachedAnvilRecipe(WELD, recipe));
+        for (AnvilRecipe recipe : recipeList) if (Helper.areItemStacksEqual(result, recipe.getCraftingResult(result))) arecipes.add(new CachedAnvilRecipe(NORMAL, recipe));
+        for (AnvilRecipe recipe : weldRecipeList) if (Helper.areItemStacksEqual(result, recipe.getCraftingResult(result))) arecipes.add(new CachedAnvilRecipe(WELD, recipe));
     }
 
     @Override
@@ -133,7 +132,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             {
                 ItemStack i1 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
                 ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input2");
-                if (ItemStack.areItemStacksEqual(ingredient, i1) || ItemStack.areItemStacksEqual(ingredient, i2))
+                if (Helper.areItemStacksEqual(ingredient, i1) || Helper.areItemStacksEqual(ingredient, i2))
                     arecipes.add(new CachedAnvilRecipe(NORMAL, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), i1, i2));
             }
 
@@ -141,7 +140,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             {
                 ItemStack i1 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
                 ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
-                if (ItemStack.areItemStacksEqual(ingredient, i1) || ItemStack.areItemStacksEqual(ingredient, i2))
+                if (Helper.areItemStacksEqual(ingredient, i1) || Helper.areItemStacksEqual(ingredient, i2))
                     arecipes.add(new CachedAnvilRecipe(WELD, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), i1, i2));
             }
         }

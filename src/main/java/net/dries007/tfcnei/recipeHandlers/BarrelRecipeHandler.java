@@ -140,7 +140,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         {
             try
             {
-                if (recipe.getInItem().isItemEqual(ingredient))
+                if (Helper.areItemStacksEqual(recipe.getInItem(), ingredient))
                 {
                     if (recipe instanceof BarrelLiquidToLiquidRecipe)
                         arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
@@ -187,7 +187,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
             Fluid fluid = null;
             if (result.getItem() == Item.getItemFromBlock(Blocks.sponge)) fluid = FluidRegistry.getFluid(result.getTagCompound().getString("FLUID"));
 
-            if ((outItem != null && outItem.isItemEqual(result) || (outFluid != null && (outFluid.isFluidEqual(result) || (fluid != null && outFluid.getFluid() == fluid)))))
+            if ((outItem != null && Helper.areItemStacksEqual(result, outItem) || (outFluid != null && (outFluid.isFluidEqual(result) || (fluid != null && outFluid.getFluid() == fluid)))))
             {
                 if (recipe instanceof BarrelLiquidToLiquidRecipe)
                     arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));

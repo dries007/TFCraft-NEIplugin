@@ -42,6 +42,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,5 +112,14 @@ public class Helper
     public static void drawCenteredString(FontRenderer fontrenderer, String s, int i, int j, int k)
     {
         fontrenderer.drawString(s, i - fontrenderer.getStringWidth(s) / 2, j, k);
+    }
+
+    /**
+     * true if both null
+     * true if items are equal and [ meta are equal or if inputStack's meta is wildcard ]
+     */
+    public static boolean areItemStacksEqual(ItemStack inputStack, ItemStack recipeStack)
+    {
+        return inputStack == recipeStack || OreDictionary.itemMatches(recipeStack, inputStack, false);
     }
 }

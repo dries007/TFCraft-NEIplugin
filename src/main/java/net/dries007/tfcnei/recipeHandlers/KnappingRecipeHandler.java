@@ -150,7 +150,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     public void loadCraftingRecipes(ItemStack result)
     {
         for (IRecipe recipe : recipeList)
-            if (recipe.getRecipeOutput().isItemEqual(result) && recipe.getRecipeSize() > 9 && recipe instanceof ShapedRecipesTFC)
+            if (Helper.areItemStacksEqual(result, recipe.getRecipeOutput()) && recipe.getRecipeSize() > 9 && recipe instanceof ShapedRecipesTFC)
             {
                 // START COPY CODE PART. FOR COMMENTS SEE loadCraftingRecipes
                 ItemStack[] inputs = getPrivateValue(ShapedRecipesTFC.class, (ShapedRecipesTFC) recipe, "recipeItems");

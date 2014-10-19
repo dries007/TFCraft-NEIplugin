@@ -104,7 +104,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
         for (LoomRecipe recipe : recipeList)
         {
             ItemStack out = Helper.getPrivateItemStack(LoomRecipe.class, recipe, "outItemStack");
-            if (out.isItemEqual(result))
+            if (Helper.areItemStacksEqual(result, out))
                 arecipes.add(new CachedLoomRecipe(recipe.getInItem(), out));
         }
     }
@@ -113,7 +113,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
     public void loadUsageRecipes(ItemStack ingredient)
     {
         for (LoomRecipe recipe : recipeList)
-            if (recipe.getInItem().isItemEqual(ingredient))
+            if (Helper.areItemStacksEqual(ingredient, recipe.getInItem()))
                 arecipes.add(new CachedLoomRecipe(recipe));
     }
 
