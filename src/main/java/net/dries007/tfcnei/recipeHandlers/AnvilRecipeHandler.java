@@ -45,6 +45,7 @@ import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.AnvilManager;
 import com.bioxx.tfc.api.Crafting.AnvilRecipe;
 import com.bioxx.tfc.api.Crafting.AnvilReq;
+import net.dries007.tfcnei.util.Helper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -189,12 +190,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
     public void drawExtras(int recipe)
     {
         super.drawExtras(recipe);
-        drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedAnvilRecipe) arecipes.get(recipe)).anvilReq, 80, -3, 0x820093);
-    }
-
-    public void drawCenteredString(FontRenderer fontrenderer, String s, int i, int j, int k)
-    {
-        fontrenderer.drawString(s, i - fontrenderer.getStringWidth(s) / 2, j, k);
+        Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedAnvilRecipe) arecipes.get(recipe)).anvilReq, 80, -3, 0x820093);
     }
 
     public static enum TYPE

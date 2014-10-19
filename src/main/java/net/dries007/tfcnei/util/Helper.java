@@ -37,6 +37,7 @@
 package net.dries007.tfcnei.util;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -105,5 +106,10 @@ public class Helper
             itemStacks.add(itemStack);
         }
         return itemStacks.toArray(new ItemStack[itemStacks.size()]);
+    }
+
+    public static void drawCenteredString(FontRenderer fontrenderer, String s, int i, int j, int k)
+    {
+        fontrenderer.drawString(s, i - fontrenderer.getStringWidth(s) / 2, j, k);
     }
 }

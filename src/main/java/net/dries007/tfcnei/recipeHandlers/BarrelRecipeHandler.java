@@ -44,6 +44,8 @@ import com.bioxx.tfc.api.Crafting.BarrelManager;
 import com.bioxx.tfc.api.Crafting.BarrelRecipe;
 import com.bioxx.tfc.api.Interfaces.IFood;
 import net.dries007.tfcnei.util.Constants;
+import net.dries007.tfcnei.util.Helper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -121,7 +123,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
                 if (recipe instanceof BarrelLiquidToLiquidRecipe)
                     arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
                 else if (recipe instanceof BarrelBriningRecipe)
-                    arecipes.add(new CachedBarrelRecipe());
+                    arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
                 else
                     arecipes.add(new CachedBarrelRecipe(recipe));
             }
@@ -143,7 +145,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
                     if (recipe instanceof BarrelLiquidToLiquidRecipe)
                         arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
                     else if (recipe instanceof BarrelBriningRecipe)
-                        arecipes.add(new CachedBarrelRecipe());
+                        arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
                     else
                         arecipes.add(new CachedBarrelRecipe(recipe));
                 }
@@ -163,7 +165,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
                     if (recipe instanceof BarrelLiquidToLiquidRecipe)
                         arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
                     else if (recipe instanceof BarrelBriningRecipe)
-                        arecipes.add(new CachedBarrelRecipe());
+                        arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
                     else
                         arecipes.add(new CachedBarrelRecipe(recipe));
                 }
@@ -190,38 +192,47 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
                 if (recipe instanceof BarrelLiquidToLiquidRecipe)
                     arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
                 else if (recipe instanceof BarrelBriningRecipe)
-                    arecipes.add(new CachedBarrelRecipe());
+                    arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
                 else
                     arecipes.add(new CachedBarrelRecipe(recipe));
             }
         }
     }
 
+    @Override
+    public void drawExtras(int recipe)
+    {
+        super.drawExtras(recipe);
+        Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) arecipes.get(recipe)).techLvlString(), 80, 10, 0x820093);
+    }
+
     public class CachedBarrelRecipe extends CachedRecipe
     {
+        int minTechLevel;
         PositionedStack inItem, inFluid;
         PositionedStack outItem, outFluid;
 
         public CachedBarrelRecipe(BarrelLiquidToLiquidRecipe recipe)
         {
-            this(getPrivateFluidStack(BarrelLiquidToLiquidRecipe.class, recipe, "inputfluid"), getPrivateFluidStack(BarrelRecipe.class, recipe, "barrelFluid"), getPrivateItemStack(BarrelRecipe.class, recipe, "outItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "outFluid"));
+            this(recipe.minTechLevel, getPrivateFluidStack(BarrelLiquidToLiquidRecipe.class, recipe, "inputfluid"), getPrivateFluidStack(BarrelRecipe.class, recipe, "barrelFluid"), getPrivateItemStack(BarrelRecipe.class, recipe, "outItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "outFluid"));
         }
 
         public CachedBarrelRecipe(BarrelRecipe recipe)
         {
-            this(getPrivateItemStack(BarrelRecipe.class, recipe, "inItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "barrelFluid"), getPrivateItemStack(BarrelRecipe.class, recipe, "outItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "outFluid"));
+            this(recipe.minTechLevel, getPrivateItemStack(BarrelRecipe.class, recipe, "inItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "barrelFluid"), getPrivateItemStack(BarrelRecipe.class, recipe, "outItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "outFluid"));
         }
 
-        public CachedBarrelRecipe(FluidStack inFluid1, FluidStack inFluid2, ItemStack outItem, FluidStack outFluid)
+        public CachedBarrelRecipe(int minTechLevel, FluidStack inFluid1, FluidStack inFluid2, ItemStack outItem, FluidStack outFluid)
         {
-            this(getItemStacksForFluid(inFluid1), inFluid2, outItem, outFluid);
+            this(minTechLevel, getItemStacksForFluid(inFluid1), inFluid2, outItem, outFluid);
         }
 
         /**
          * @param inItem Itemstack or ItemStack[]
          */
-        public CachedBarrelRecipe(Object inItem, FluidStack inFluid, ItemStack outItem, FluidStack outFluid)
+        public CachedBarrelRecipe(int minTechLevel, Object inItem, FluidStack inFluid, ItemStack outItem, FluidStack outFluid)
         {
+            this.minTechLevel = minTechLevel;
             this.inItem = inItem == null ? null : new PositionedStack(inItem, 3, 24);
             this.outItem = outItem == null ? null : new PositionedStack(outItem, 99, 24);
             ItemStack inFluidStack[] = getItemStacksForFluid(inFluid);
@@ -230,8 +241,9 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
             this.outFluid = outFluidStack == null ? null : new PositionedStack(outFluidStack, 143, 24);
         }
 
-        public CachedBarrelRecipe()
+        public CachedBarrelRecipe(int minTechLevel)
         {
+            this.minTechLevel = minTechLevel;
             this.inItem = new PositionedStack(fooditems, 3, 24);
             this.outItem = new PositionedStack(fooditems, 99, 24);
             this.inFluid = new PositionedStack(getItemStacksForFluid(new FluidStack(BRINE, BUCKET_VOLUME)), 39, 24);
@@ -260,6 +272,19 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         {
             if (outItem != null) randomRenderPermutation(outItem, cycleticks / 12);
             return outItem;
+        }
+
+        public String techLvlString()
+        {
+            switch (minTechLevel)
+            {
+                case 0:
+                    return "Vessel or Barrel";
+                case 1:
+                    return "Barrel only";
+                default:
+                    return "Unknown.";
+            }
         }
     }
 }
