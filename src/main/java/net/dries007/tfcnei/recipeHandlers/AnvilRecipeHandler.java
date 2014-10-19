@@ -139,7 +139,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             for (AnvilRecipe recipe : weldRecipeList)
             {
                 ItemStack i1 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
-                ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
+                ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input2");
                 if (Helper.areItemStacksEqual(ingredient, i1) || Helper.areItemStacksEqual(ingredient, i2))
                     arecipes.add(new CachedAnvilRecipe(WELD, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), i1, i2));
             }
