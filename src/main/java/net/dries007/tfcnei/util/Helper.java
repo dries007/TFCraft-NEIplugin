@@ -42,6 +42,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 import static net.minecraftforge.fluids.FluidContainerRegistry.getRegisteredFluidContainerData;
 
@@ -77,25 +80,30 @@ public class Helper
         return ReflectionHelper.getPrivateValue(classToAccess, instance, fieldNames);
     }
 
-    public static ItemStack getItemStackForFluid(FluidStack fluidStack)
+    public static ItemStack[] getItemStacksForFluid(FluidStack fluidStack)
     {
         if (fluidStack == null) return null;
 
-        ItemStack itemStack = null;
+        List<ItemStack> itemStacks = new ArrayList<>();
         for (FluidContainerRegistry.FluidContainerData data : getRegisteredFluidContainerData())
         {
             if (data.fluid.isFluidEqual(fluidStack))
             {
-                itemStack = data.filledContainer.copy();
+                ItemStack itemStack = data.filledContainer.copy();
                 itemStack.stackSize = fluidStack.amount / FluidContainerRegistry.getContainerCapacity(data.fluid, data.emptyContainer);
-                break;
+                itemStacks.add(itemStack);
             }
         }
-        if (itemStack == null)
+        if (itemStacks.size() == 0)
         {
-            itemStack = new ItemStack(fluidStack.getFluid().getBlock(), fluidStack.amount / BUCKET_VOLUME);
-            if (itemStack.getItem() == null) itemStack = new ItemStack(Blocks.sponge, itemStack.stackSize).setStackDisplayName(fluidStack.getLocalizedName());
+            ItemStack itemStack = new ItemStack(fluidStack.getFluid().getBlock(), fluidStack.amount / BUCKET_VOLUME);
+            if (itemStack.getItem() == null)
+            {
+                itemStack = new ItemStack(Blocks.sponge, itemStack.stackSize).setStackDisplayName(fluidStack.getLocalizedName());
+                itemStack.getTagCompound().setString("FLUID", fluidStack.getFluid().getName());
+            }
+            itemStacks.add(itemStack);
         }
-        return itemStack;
+        return itemStacks.toArray(new ItemStack[itemStacks.size()]);
     }
 }

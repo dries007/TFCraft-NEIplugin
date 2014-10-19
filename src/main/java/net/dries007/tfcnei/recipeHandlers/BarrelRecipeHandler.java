@@ -45,8 +45,11 @@ import com.bioxx.tfc.api.Crafting.BarrelRecipe;
 import com.bioxx.tfc.api.Interfaces.IFood;
 import net.dries007.tfcnei.util.Constants;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
@@ -151,6 +154,10 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
 
             try
             {
+                if (ingredient.getItem() == Item.getItemFromBlock(Blocks.sponge))
+                {
+                    fluidStack = new FluidStack(FluidRegistry.getFluid(ingredient.getTagCompound().getString("FLUID")), ingredient.getMaxStackSize() * BUCKET_VOLUME);
+                }
                 if (recipe.isInFluid(fluidStack))
                 {
                     if (recipe instanceof BarrelLiquidToLiquidRecipe)
@@ -174,8 +181,19 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         {
             ItemStack outItem = getPrivateValue(BarrelRecipe.class, recipe, "outItemStack");
             FluidStack outFluid = getPrivateValue(BarrelRecipe.class, recipe, "outFluid");
-            if ((outItem != null && outItem.isItemEqual(result) || (outFluid != null && outFluid.isFluidEqual(result))))
-                arecipes.add(new CachedBarrelRecipe(recipe));
+
+            Fluid fluid = null;
+            if (result.getItem() == Item.getItemFromBlock(Blocks.sponge)) fluid = FluidRegistry.getFluid(result.getTagCompound().getString("FLUID"));
+
+            if ((outItem != null && outItem.isItemEqual(result) || (outFluid != null && (outFluid.isFluidEqual(result) || (fluid != null && outFluid.getFluid() == fluid)))))
+            {
+                if (recipe instanceof BarrelLiquidToLiquidRecipe)
+                    arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
+                else if (recipe instanceof BarrelBriningRecipe)
+                    arecipes.add(new CachedBarrelRecipe());
+                else
+                    arecipes.add(new CachedBarrelRecipe(recipe));
+            }
         }
     }
 
@@ -196,16 +214,19 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
 
         public CachedBarrelRecipe(FluidStack inFluid1, FluidStack inFluid2, ItemStack outItem, FluidStack outFluid)
         {
-            this(getItemStackForFluid(inFluid1), inFluid2, outItem, outFluid);
+            this(getItemStacksForFluid(inFluid1), inFluid2, outItem, outFluid);
         }
 
-        public CachedBarrelRecipe(ItemStack inItem, FluidStack inFluid, ItemStack outItem, FluidStack outFluid)
+        /**
+         * @param inItem Itemstack or ItemStack[]
+         */
+        public CachedBarrelRecipe(Object inItem, FluidStack inFluid, ItemStack outItem, FluidStack outFluid)
         {
             this.inItem = inItem == null ? null : new PositionedStack(inItem, 3, 24);
             this.outItem = outItem == null ? null : new PositionedStack(outItem, 99, 24);
-            ItemStack inFluidStack = getItemStackForFluid(inFluid);
+            ItemStack inFluidStack[] = getItemStacksForFluid(inFluid);
             this.inFluid = inFluidStack == null ? null : new PositionedStack(inFluidStack, 39, 24);
-            ItemStack outFluidStack = getItemStackForFluid(outFluid);
+            ItemStack outFluidStack[] = getItemStacksForFluid(outFluid);
             this.outFluid = outFluidStack == null ? null : new PositionedStack(outFluidStack, 143, 24);
         }
 
@@ -213,13 +234,14 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         {
             this.inItem = new PositionedStack(fooditems, 3, 24);
             this.outItem = new PositionedStack(fooditems, 99, 24);
-            this.inFluid = new PositionedStack(getItemStackForFluid(new FluidStack(BRINE, BUCKET_VOLUME)), 39, 24);
+            this.inFluid = new PositionedStack(getItemStacksForFluid(new FluidStack(BRINE, BUCKET_VOLUME)), 39, 24);
         }
 
         @Override
         public List<PositionedStack> getIngredients()
         {
-            if (inItem != null) randomRenderPermutation(inItem, cycleticks / 24);
+            if (inItem != null) randomRenderPermutation(inItem, cycleticks / 12);
+            if (inFluid != null) randomRenderPermutation(inFluid, cycleticks / 12);
             ArrayList<PositionedStack> list = new ArrayList<>(2);
             if (inItem != null) list.add(inItem);
             if (inFluid != null) list.add(inFluid);
@@ -229,13 +251,14 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         @Override
         public PositionedStack getOtherStack()
         {
+            if (outFluid != null) randomRenderPermutation(outFluid, cycleticks / 12);
             return outFluid;
         }
 
         @Override
         public PositionedStack getResult()
         {
-            if (outItem != null) randomRenderPermutation(outItem, cycleticks / 24);
+            if (outItem != null) randomRenderPermutation(outItem, cycleticks / 12);
             return outItem;
         }
     }
