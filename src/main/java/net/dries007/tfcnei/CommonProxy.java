@@ -41,7 +41,6 @@ package net.dries007.tfcnei;
  */
 public class CommonProxy
 {
-
     public void preinit()
     {
 

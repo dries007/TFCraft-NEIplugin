@@ -44,6 +44,9 @@ import com.bioxx.tfc.Items.Tools.ItemHammer;
 import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.AnvilManager;
 import com.bioxx.tfc.api.Crafting.AnvilRecipe;
+import com.bioxx.tfc.api.Crafting.AnvilReq;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
@@ -55,6 +58,7 @@ import static codechicken.lib.gui.GuiDraw.changeTexture;
 import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 import static net.dries007.tfcnei.recipeHandlers.AnvilRecipeHandler.TYPE.*;
 import static net.dries007.tfcnei.util.Helper.getPrivateItemStack;
+import static net.dries007.tfcnei.util.Helper.getPrivateValue;
 
 /**
  * @author Dries007
@@ -129,7 +133,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
                 ItemStack i1 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
                 ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input2");
                 if (ItemStack.areItemStacksEqual(ingredient, i1) || ItemStack.areItemStacksEqual(ingredient, i2))
-                    arecipes.add(new CachedAnvilRecipe(NORMAL, recipe.getCraftingResult(), i1, i2));
+                    arecipes.add(new CachedAnvilRecipe(NORMAL, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), i1, i2));
             }
 
             for (AnvilRecipe recipe : weldRecipeList)
@@ -137,7 +141,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
                 ItemStack i1 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
                 ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
                 if (ItemStack.areItemStacksEqual(ingredient, i1) || ItemStack.areItemStacksEqual(ingredient, i2))
-                    arecipes.add(new CachedAnvilRecipe(WELD, recipe.getCraftingResult(), i1, i2));
+                    arecipes.add(new CachedAnvilRecipe(WELD, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), i1, i2));
             }
         }
     }
@@ -181,6 +185,18 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
         drawExtras(recipe);
     }
 
+    @Override
+    public void drawExtras(int recipe)
+    {
+        super.drawExtras(recipe);
+        drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedAnvilRecipe) arecipes.get(recipe)).anvilReq, 80, -3, 0x820093);
+    }
+
+    public void drawCenteredString(FontRenderer fontrenderer, String s, int i, int j, int k)
+    {
+        fontrenderer.drawString(s, i - fontrenderer.getStringWidth(s) / 2, j, k);
+    }
+
     public static enum TYPE
     {
         NORMAL, WELD, HAMMER_NORMAL, HAMMER_WELD;
@@ -195,15 +211,24 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
     {
         PositionedStack i1, i2, out;
         TYPE type;
+        public String anvilReq;
 
         public CachedAnvilRecipe(TYPE type, AnvilRecipe recipe)
         {
-            this(type, recipe.getCraftingResult(), getPrivateItemStack(AnvilRecipe.class, recipe, "input1"), getPrivateItemStack(AnvilRecipe.class, recipe, "input2"));
+            this(type, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), getPrivateItemStack(AnvilRecipe.class, recipe, "input1"), getPrivateItemStack(AnvilRecipe.class, recipe, "input2"));
         }
 
-        public CachedAnvilRecipe(TYPE type, ItemStack out, ItemStack i1, ItemStack i2)
+        public CachedAnvilRecipe(TYPE type, int anvilreq, ItemStack out, ItemStack i1, ItemStack i2)
         {
             this.type = type;
+            StringBuilder sb = new StringBuilder();
+            for (AnvilReq a : AnvilReq.rules)
+            {
+                if (a.Tier != anvilreq) continue;
+                sb.append(a.Name).append(" anvil or better");
+                break;
+            }
+            this.anvilReq = sb.toString();
             if (i1 != null) this.i1 = new PositionedStack(i1, type.isWeld() ? -7 : 66, type.isWeld() ? 17 : 51);
             if (i2 != null) this.i2 = new PositionedStack(i2, type.isWeld() ? 11 : 84, type.isWeld() ? 17 : 51);
             this.out = new PositionedStack(out, type.isWeld() ? 2 : 103, type.isWeld() ? 39 : 51);

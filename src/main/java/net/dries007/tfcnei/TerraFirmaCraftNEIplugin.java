@@ -39,6 +39,9 @@ package net.dries007.tfcnei;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.dries007.tfcnei.util.Metrics;
+
+import java.io.IOException;
 
 import static net.dries007.tfcnei.util.Constants.MODID;
 
@@ -55,5 +58,13 @@ public class TerraFirmaCraftNEIplugin
     public void preinit(FMLPreInitializationEvent event)
     {
         proxy.preinit();
+        try
+        {
+            new Metrics(MODID, event.getModMetadata().version).start();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
