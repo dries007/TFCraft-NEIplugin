@@ -28,7 +28,7 @@ apply plugin: "forge"
 apply plugin: "idea-utils"
 
 group = "net.dries007.tfcnei"
-version = "1.1.0"
+version = "1.1.1"
 
 targetCompatibility = 1.7
 sourceCompatibility = 1.7
