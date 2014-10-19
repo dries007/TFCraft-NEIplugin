@@ -70,7 +70,7 @@ import static net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilled
 public class BarrelRecipeHandler extends TemplateRecipeHandler
 {
     private static List<BarrelRecipe> recipeList;
-    private static ItemStack[] fooditems;
+    private static ItemStack[]        fooditems;
 
     @Override
     public String getGuiTexture()
@@ -208,7 +208,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
 
     public class CachedBarrelRecipe extends CachedRecipe
     {
-        int minTechLevel;
+        int             minTechLevel;
         PositionedStack inItem, inFluid;
         PositionedStack outItem, outFluid;
 

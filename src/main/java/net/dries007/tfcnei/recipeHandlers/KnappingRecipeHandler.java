@@ -233,8 +233,8 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     public class CachedKnappingRecipe extends CachedRecipe
     {
         List<PositionedStack> inputs;
-        PositionedStack result;
-        PositionedStack actualInput;
+        PositionedStack       result;
+        PositionedStack       actualInput;
 
         public CachedKnappingRecipe(final int W, final int H, ItemStack off, ItemStack[] inputs, ItemStack recipeOutput, ItemStack actualInput)
         {

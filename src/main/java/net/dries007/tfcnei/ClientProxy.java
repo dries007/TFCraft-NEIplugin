@@ -39,7 +39,6 @@ package net.dries007.tfcnei;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.dries007.tfcnei.recipeHandlers.*;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
