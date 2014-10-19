@@ -174,7 +174,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                             arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                         }
                     }
-                    else if (inStack.getItemDamage() == Short.MAX_VALUE || result.getItemDamage() == inStack.getItemDamage())  // In this case match damage value of stone too.
+                    else
                     {
                         ItemStack actualInput = null;
                         if (inStack.getItem() == TFCItems.FlatLeather) actualInput = new ItemStack(TFCItems.Leather);
