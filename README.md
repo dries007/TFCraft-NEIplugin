@@ -21,4 +21,4 @@ Download
 Forum post
 ----------
 
-[TerraFirmaCraft Forum post](terrafirmacraft.com/f/topic/6733-)
+[TerraFirmaCraft Forum post](http://terrafirmacraft.com/f/topic/6733-)
