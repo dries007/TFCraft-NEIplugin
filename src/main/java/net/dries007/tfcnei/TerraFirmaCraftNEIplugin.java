@@ -40,7 +40,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkCheckHandler;
-import javafx.geometry.Side;
+import cpw.mods.fml.relauncher.Side;
 import net.dries007.tfcnei.util.Metrics;
 
 import java.io.IOException;
