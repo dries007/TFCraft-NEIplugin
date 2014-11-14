@@ -109,7 +109,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                 if (recipe.getRecipeSize() > 9 && recipe instanceof ShapedRecipesTFC) // Filter out junk for optimisation. All knapping recipes are > 9 and are shaped
                 {
                     // START COPY CODE PART
-                    ItemStack[] inputs = getPrivateValue(ShapedRecipesTFC.class, (ShapedRecipesTFC) recipe, "recipeItems"); // Get inputs
+                    ItemStack[] inputs = ((ShapedRecipesTFC) recipe).getRecipeItems(); // Get inputs
                     for (ItemStack inStack : inputs)
                     {
                         if (inStack == null) continue; // Loop over until we find a not null entry
@@ -120,13 +120,13 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                             {
                                 ItemStack actualInput = new ItemStack(TFCItems.ClayBall, 5, 0);
                                 ItemStack flatType2 = new ItemStack(inStack.getItem(), 1, 0); // Dark texture has data value 0
-                                arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
+                                arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                             }
                             else if (inStack.getItemDamage() == 3) // Fire clay (damage value 3)
                             {
                                 ItemStack actualInput = new ItemStack(TFCItems.ClayBall, 5, 1);
                                 ItemStack flatType2 = new ItemStack(inStack.getItem(), 1, 2); // Dark texture has data value 3
-                                arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
+                                arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                             }
                         }
                         else // If not clay (aka Leather or stone) add the recipe without a 'dark' texture in place.
@@ -135,7 +135,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                             if (inStack.getItem() == TFCItems.FlatLeather) actualInput = new ItemStack(TFCItems.Leather);
                             else if (inStack.getItem() == TFCItems.FlatRock) actualInput = new ItemStack(TFCItems.LooseRock);
                             else if (inStack.getItem() == TFCItems.FlatClay) actualInput = new ItemStack(TFCItems.ClayBall, 5);
-                            arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), null, inputs, recipe.getRecipeOutput(), actualInput));
+                            arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), null, inputs, recipe.getRecipeOutput(), actualInput));
                         }
                         break;
                     }
@@ -154,7 +154,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
             if (Helper.areItemStacksEqual(result, recipe.getRecipeOutput()) && recipe.getRecipeSize() > 9 && recipe instanceof ShapedRecipesTFC)
             {
                 // START COPY CODE PART. FOR COMMENTS SEE loadCraftingRecipes
-                ItemStack[] inputs = getPrivateValue(ShapedRecipesTFC.class, (ShapedRecipesTFC) recipe, "recipeItems");
+                ItemStack[] inputs = ((ShapedRecipesTFC) recipe).getRecipeItems();
                 for (ItemStack inStack : inputs)
                 {
                     if (inStack == null) continue;
@@ -165,13 +165,13 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                         {
                             ItemStack actualInput = new ItemStack(TFCItems.ClayBall, 5, 0);
                             ItemStack flatType2 = new ItemStack(inStack.getItem(), 1, 0);
-                            arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
+                            arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                         }
                         else if (inStack.getItemDamage() == 3)
                         {
                             ItemStack actualInput = new ItemStack(TFCItems.ClayBall, 5, 1);
                             ItemStack flatType2 = new ItemStack(inStack.getItem(), 1, 2);
-                            arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
+                            arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                         }
                     }
                     else
@@ -180,7 +180,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                         if (inStack.getItem() == TFCItems.FlatLeather) actualInput = new ItemStack(TFCItems.Leather);
                         else if (inStack.getItem() == TFCItems.FlatRock) actualInput = new ItemStack(TFCItems.LooseRock);
                         else if (inStack.getItem() == TFCItems.FlatClay) actualInput = new ItemStack(TFCItems.ClayBall, 5);
-                        arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), null, inputs, recipe.getRecipeOutput(), actualInput));
+                        arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), null, inputs, recipe.getRecipeOutput(), actualInput));
                     }
                     break;
                 }
@@ -193,12 +193,12 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     public void loadUsageRecipes(ItemStack ingredient)
     {
         if (!(ingredient.getItem() instanceof ItemLooseRock)) return;
-        Item flatType = getPrivateValue(ItemLooseRock.class, (ItemLooseRock) ingredient.getItem(), "specialCraftingType");
+        Item flatType = getPrivateValue(ItemLooseRock.class, (ItemLooseRock) ingredient.getItem(), "specialCraftingType");//TODO: no more reflection!
         for (IRecipe recipe : recipeList)
         {
             if (recipe.getRecipeSize() > 9 && recipe instanceof ShapedRecipesTFC)
             {
-                ItemStack[] inputs = getPrivateValue(ShapedRecipesTFC.class, (ShapedRecipesTFC) recipe, "recipeItems");
+                ItemStack[] inputs = ((ShapedRecipesTFC) recipe).getRecipeItems();
                 for (ItemStack inStack : inputs)
                 {
                     if (inStack == null || flatType != inStack.getItem()) continue;
@@ -208,13 +208,13 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                         {
                             ItemStack actualInput = new ItemStack(TFCItems.ClayBall, 5, 0);
                             ItemStack flatType2 = new ItemStack(flatType, 1, 0);
-                            arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
+                            arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                         }
                         else if (ingredient.getItemDamage() == 1 && inStack.getItemDamage() == 3) // Compare to see if the ingredient is fire clay
                         {
                             ItemStack actualInput = new ItemStack(TFCItems.ClayBall, 5, 0);
                             ItemStack flatType2 = new ItemStack(flatType, 1, 2);
-                            arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
+                            arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), flatType2, inputs, recipe.getRecipeOutput(), actualInput));
                         }
                     }
                     else if (inStack.getItemDamage() == Short.MAX_VALUE || ingredient.getItemDamage() == inStack.getItemDamage())  // In this case match damage value of stone too.
@@ -223,7 +223,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
                         if (inStack.getItem() == TFCItems.FlatLeather) actualInput = new ItemStack(TFCItems.Leather);
                         else if (inStack.getItem() == TFCItems.FlatRock) actualInput = new ItemStack(TFCItems.LooseRock);
                         else if (inStack.getItem() == TFCItems.FlatClay) actualInput = new ItemStack(TFCItems.ClayBall, 5);
-                        arecipes.add(new CachedKnappingRecipe(Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeWidth"), Helper.getPrivateValue(ShapedRecipesTFC.class, int.class, (ShapedRecipesTFC) recipe, "recipeHeight"), null, inputs, recipe.getRecipeOutput(), actualInput));
+                        arecipes.add(new CachedKnappingRecipe(((ShapedRecipesTFC) recipe).getRecipeWidth(), ((ShapedRecipesTFC) recipe).getRecipeHeight(), null, inputs, recipe.getRecipeOutput(), actualInput));
                     }
                     break;
                 }

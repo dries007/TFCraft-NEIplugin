@@ -96,7 +96,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
     {
         if (recipeList == null)
         {
-            recipeList = getPrivateValue(BarrelManager.class, BarrelManager.getInstance(), "recipes");
+            recipeList = getPrivateValue(BarrelManager.class, BarrelManager.getInstance(), "recipes");//TODO: no more reflection!
             List<ItemStack> items = new ArrayList<>();
             for (Item item : (Iterable<Item>) Item.itemRegistry)
             {
@@ -181,8 +181,8 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
     {
         for (BarrelRecipe recipe : recipeList)
         {
-            ItemStack outItem = getPrivateValue(BarrelRecipe.class, recipe, "outItemStack");
-            FluidStack outFluid = getPrivateValue(BarrelRecipe.class, recipe, "outFluid");
+            ItemStack outItem = recipe.getRecipeOutIS();
+            FluidStack outFluid = recipe.getRecipeOutFluid();
 
             Fluid fluid = null;
             if (result.getItem() == Item.getItemFromBlock(Blocks.sponge)) fluid = FluidRegistry.getFluid(result.getTagCompound().getString("FLUID"));
@@ -215,12 +215,12 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
 
         public CachedBarrelRecipe(BarrelLiquidToLiquidRecipe recipe)
         {
-            this(recipe.minTechLevel, getPrivateFluidStack(BarrelLiquidToLiquidRecipe.class, recipe, "inputfluid"), getPrivateFluidStack(BarrelRecipe.class, recipe, "barrelFluid"), getPrivateItemStack(BarrelRecipe.class, recipe, "outItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "outFluid"));
+            this(recipe.minTechLevel, recipe.getInFluid(), recipe.getInFluid(), recipe.getRecipeOutIS(), recipe.getRecipeOutFluid());
         }
 
         public CachedBarrelRecipe(BarrelRecipe recipe)
         {
-            this(recipe.minTechLevel, getPrivateItemStack(BarrelRecipe.class, recipe, "inItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "barrelFluid"), getPrivateItemStack(BarrelRecipe.class, recipe, "outItemStack"), getPrivateFluidStack(BarrelRecipe.class, recipe, "outFluid"));
+            this(recipe.minTechLevel, recipe.getInItem(), recipe.getInFluid(), recipe.getRecipeOutIS(), recipe.getRecipeOutFluid());
         }
 
         public CachedBarrelRecipe(int minTechLevel, FluidStack inFluid1, FluidStack inFluid2, ItemStack outItem, FluidStack outFluid)

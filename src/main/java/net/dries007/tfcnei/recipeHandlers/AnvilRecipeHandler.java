@@ -130,18 +130,14 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
         {
             for (AnvilRecipe recipe : recipeList)
             {
-                ItemStack i1 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
-                ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input2");
-                if (Helper.areItemStacksEqual(ingredient, i1) || Helper.areItemStacksEqual(ingredient, i2))
-                    arecipes.add(new CachedAnvilRecipe(NORMAL, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), i1, i2));
+                if (Helper.areItemStacksEqual(ingredient, recipe.getInput1()) || Helper.areItemStacksEqual(ingredient, recipe.getInput2()))
+                    arecipes.add(new CachedAnvilRecipe(NORMAL, recipe.getAnvilreq(), recipe.getCraftingResult(), recipe.getInput1(), recipe.getInput2()));
             }
 
             for (AnvilRecipe recipe : weldRecipeList)
             {
-                ItemStack i1 = getPrivateItemStack(AnvilRecipe.class, recipe, "input1");
-                ItemStack i2 = getPrivateItemStack(AnvilRecipe.class, recipe, "input2");
-                if (Helper.areItemStacksEqual(ingredient, i1) || Helper.areItemStacksEqual(ingredient, i2))
-                    arecipes.add(new CachedAnvilRecipe(WELD, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), i1, i2));
+                if (Helper.areItemStacksEqual(ingredient, recipe.getInput1()) || Helper.areItemStacksEqual(ingredient, recipe.getInput2()))
+                    arecipes.add(new CachedAnvilRecipe(WELD, recipe.getAnvilreq(), recipe.getCraftingResult(), recipe.getInput1(), recipe.getInput2()));
             }
         }
     }
@@ -211,7 +207,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
 
         public CachedAnvilRecipe(TYPE type, AnvilRecipe recipe)
         {
-            this(type, getPrivateValue(AnvilRecipe.class, int.class, recipe, "anvilreq"), recipe.getCraftingResult(), getPrivateItemStack(AnvilRecipe.class, recipe, "input1"), getPrivateItemStack(AnvilRecipe.class, recipe, "input2"));
+            this(type, recipe.getAnvilreq(), recipe.getCraftingResult(), recipe.getInput1(), recipe.getInput2());
         }
 
         public CachedAnvilRecipe(TYPE type, int anvilreq, ItemStack out, ItemStack i1, ItemStack i2)

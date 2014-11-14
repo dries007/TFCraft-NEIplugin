@@ -110,7 +110,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
     @Override
     public TemplateRecipeHandler newInstance()
     {
-        if (recipeList == null) recipeList = ReflectionHelper.getPrivateValue(QuernManager.class, QuernManager.getInstance(), "recipes");
+        if (recipeList == null) recipeList = ReflectionHelper.getPrivateValue(QuernManager.class, QuernManager.getInstance(), "recipes"); //TODO: no more reflection!
         return super.newInstance();
     }
 

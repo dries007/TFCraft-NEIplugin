@@ -94,7 +94,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
     @Override
     public TemplateRecipeHandler newInstance()
     {
-        if (recipeList == null) recipeList = ReflectionHelper.getPrivateValue(LoomManager.class, LoomManager.getInstance(), "recipes");
+        if (recipeList == null) recipeList = ReflectionHelper.getPrivateValue(LoomManager.class, LoomManager.getInstance(), "recipes");//TODO: no more reflection!
         return super.newInstance();
     }
 
@@ -103,7 +103,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
     {
         for (LoomRecipe recipe : recipeList)
         {
-            ItemStack out = Helper.getPrivateItemStack(LoomRecipe.class, recipe, "outItemStack");
+            ItemStack out = recipe.getOutItemStack();
             if (Helper.areItemStacksEqual(result, out))
                 arecipes.add(new CachedLoomRecipe(recipe.getInItem(), out));
         }
@@ -130,7 +130,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
 
         public CachedLoomRecipe(LoomRecipe recipe)
         {
-            this(recipe.getInItem(), Helper.getPrivateItemStack(LoomRecipe.class, recipe, "outItemStack"));
+            this(recipe.getInItem(), recipe.getOutItemStack());
         }
 
         @Override

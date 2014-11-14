@@ -112,9 +112,8 @@ public class KilnRecipeHandler extends TemplateRecipeHandler
     {
         for (KilnRecipe recipe : recipeList)
         {
-            ItemStack in = Helper.getPrivateItemStack(KilnRecipe.class, recipe, "input1");
-            if (Helper.areItemStacksEqual(ingredient, in))
-                arecipes.add(new CachedKilnRecipe(in, recipe.getCraftingResult()));
+            if (Helper.areItemStacksEqual(ingredient, recipe.getInput1()))
+                arecipes.add(new CachedKilnRecipe(recipe.getInput1(), recipe.getCraftingResult()));
         }
     }
 
@@ -131,7 +130,7 @@ public class KilnRecipeHandler extends TemplateRecipeHandler
 
         public CachedKilnRecipe(KilnRecipe recipe)
         {
-            this(Helper.getPrivateItemStack(KilnRecipe.class, recipe, "input1"), recipe.getCraftingResult());
+            this(recipe.getInput1(), recipe.getCraftingResult());
         }
 
         @Override
