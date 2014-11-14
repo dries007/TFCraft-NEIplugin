@@ -57,8 +57,6 @@ import java.util.List;
 import static codechicken.lib.gui.GuiDraw.changeTexture;
 import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 import static net.dries007.tfcnei.recipeHandlers.AnvilRecipeHandler.TYPE.*;
-import static net.dries007.tfcnei.util.Helper.getPrivateItemStack;
-import static net.dries007.tfcnei.util.Helper.getPrivateValue;
 
 /**
  * @author Dries007

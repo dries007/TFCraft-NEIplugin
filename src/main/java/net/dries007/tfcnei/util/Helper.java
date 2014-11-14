@@ -63,7 +63,8 @@ public class Helper
 
     /**
      * For ease of use when using some field or method in for example an if statement
-     * @deprecated  because its bad to use, and it will alert me at compile time.
+     *
+     * @deprecated because its bad to use, and it will alert me at compile time.
      */
     @Deprecated
     public static <T, E> T getPrivateValue(Class<? super E> classToAccess, Class<T> returnType, E instance, String... fieldNames)

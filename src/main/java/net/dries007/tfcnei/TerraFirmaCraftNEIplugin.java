@@ -72,7 +72,7 @@ public class TerraFirmaCraftNEIplugin
     }
 
     @NetworkCheckHandler
-    public boolean checkVersion(Map<String,String> mods, Side side)
+    public boolean checkVersion(Map<String, String> mods, Side side)
     {
         return true;
     }

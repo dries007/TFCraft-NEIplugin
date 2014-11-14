@@ -60,7 +60,7 @@ import java.util.List;
 
 import static com.bioxx.tfc.Core.TFCFluid.BRINE;
 import static cpw.mods.fml.relauncher.ReflectionHelper.getPrivateValue;
-import static net.dries007.tfcnei.util.Helper.*;
+import static net.dries007.tfcnei.util.Helper.getItemStacksForFluid;
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 import static net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilledItem;
 
