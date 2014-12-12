@@ -96,7 +96,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
     {
         if (recipeList == null)
         {
-            recipeList = getPrivateValue(BarrelManager.class, BarrelManager.getInstance(), "recipes");//TODO: no more reflection!
+            recipeList = BarrelManager.getInstance().getRecipes();
             List<ItemStack> items = new ArrayList<>();
             for (Item item : (Iterable<Item>) Item.itemRegistry)
             {

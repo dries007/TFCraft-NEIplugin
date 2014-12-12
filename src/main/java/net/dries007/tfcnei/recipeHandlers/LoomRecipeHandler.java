@@ -94,7 +94,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
     @Override
     public TemplateRecipeHandler newInstance()
     {
-        if (recipeList == null) recipeList = ReflectionHelper.getPrivateValue(LoomManager.class, LoomManager.getInstance(), "recipes");//TODO: no more reflection!
+        if (recipeList == null) recipeList = LoomManager.getInstance().getRecipes();
         return super.newInstance();
     }
 

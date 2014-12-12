@@ -193,7 +193,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     public void loadUsageRecipes(ItemStack ingredient)
     {
         if (!(ingredient.getItem() instanceof ItemLooseRock)) return;
-        Item flatType = getPrivateValue(ItemLooseRock.class, (ItemLooseRock) ingredient.getItem(), "specialCraftingType");//TODO: no more reflection!
+        Item flatType = ((ItemLooseRock) ingredient.getItem()).getSpecialCraftingType();
         for (IRecipe recipe : recipeList)
         {
             if (recipe.getRecipeSize() > 9 && recipe instanceof ShapedRecipesTFC)

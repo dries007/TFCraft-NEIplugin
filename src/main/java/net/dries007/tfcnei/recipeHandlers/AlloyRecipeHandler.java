@@ -171,8 +171,8 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
 
                 if (alloyMetal instanceof AlloyMetalCompare)
                 {
-                    min.add(String.format("%2.0f%%", Helper.getPrivateValue(AlloyMetalCompare.class, float.class, (AlloyMetalCompare) alloyMetal, "metalMin"))); //TODO: no more reflection!
-                    max.add(String.format("%2.0f%%", Helper.getPrivateValue(AlloyMetalCompare.class, float.class, (AlloyMetalCompare) alloyMetal, "metalMax"))); //TODO: no more reflection!
+                    min.add(String.format("%2.0f%%", ((AlloyMetalCompare) alloyMetal).getMetalMin()));
+                    max.add(String.format("%2.0f%%", ((AlloyMetalCompare) alloyMetal).getMetalMax()));
                 }
                 else
                 {
@@ -181,9 +181,9 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
                 }
             }
 
-            tech = String.valueOf(Helper.getPrivateValue(Alloy.class, Alloy.EnumTier.class, recipe, "furnaceTier").tier); //TODO: no more reflection!
+            tech = recipe.getFurnaceTier().toString();
 
-            switch (Helper.getPrivateValue(Alloy.class, Alloy.EnumTier.class, recipe, "furnaceTier").tier) //TODO: no more reflection!
+            switch (recipe.getFurnaceTier().tier)
             {
                 case 1:
                     tech = "Pit Kiln";
