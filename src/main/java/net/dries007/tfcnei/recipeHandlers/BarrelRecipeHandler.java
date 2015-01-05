@@ -215,7 +215,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
 
         public CachedBarrelRecipe(BarrelLiquidToLiquidRecipe recipe)
         {
-            this(recipe.minTechLevel, recipe.getInFluid(), recipe.getInFluid(), recipe.getRecipeOutIS(), recipe.getRecipeOutFluid());
+            this(recipe.minTechLevel, recipe.getInFluid(), recipe.getInputfluid(), recipe.getRecipeOutIS(), recipe.getRecipeOutFluid());
         }
 
         public CachedBarrelRecipe(BarrelRecipe recipe)
