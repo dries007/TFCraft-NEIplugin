@@ -36,8 +36,11 @@
 
 package net.dries007.tfcnei.recipeHandlers;
 
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
 import com.bioxx.tfc.api.Crafting.BarrelBriningRecipe;
@@ -177,9 +180,9 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
             Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) crecipe).sealTimeString(), 83, 48, 0x555555);
 
             if (((CachedBarrelRecipe) crecipe).getInFluid() != null)
-                Helper.drawFluidInRect(((CachedBarrelRecipe) crecipe).getInFluid().getFluid(), ((CachedBarrelRecipe) crecipe).getInFluidRect());
+                Helper.drawFluidInRect(((CachedBarrelRecipe) crecipe).getInFluid().getFluid(), recipeInFluidRect());
             if (((CachedBarrelRecipe) crecipe).getOutFluid() != null)
-                Helper.drawFluidInRect(((CachedBarrelRecipe) crecipe).getOutFluid().getFluid(), ((CachedBarrelRecipe) crecipe).getOutFluidRect());
+                Helper.drawFluidInRect(((CachedBarrelRecipe) crecipe).getOutFluid().getFluid(), recipeOutFluidRect());
         }
     }
 
@@ -187,20 +190,84 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
     public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipe)
     {
         CachedRecipe irecipe = arecipes.get(recipe);
-        Point mousepos = getMousePosition();
-        Point offset = gui.getRecipePosition(recipe);
-        Point relMouse = new Point(mousepos.x - gui.guiLeft - offset.x, mousepos.y - gui.guiTop - offset.y);
-
         if (irecipe instanceof CachedBarrelRecipe)
         {
-            if (((CachedBarrelRecipe) irecipe).getOutFluidRect().contains(relMouse) &&
+            Point mousepos = getMousePosition();
+            Point offset = gui.getRecipePosition(recipe);
+            Point relMouse = new Point(mousepos.x - gui.guiLeft - offset.x, mousepos.y - gui.guiTop - offset.y);
+            if (recipeOutFluidRect().contains(relMouse) &&
                 (((CachedBarrelRecipe) irecipe).getOutFluid() != null))
                 currenttip.add(Helper.tooltipForFluid(((CachedBarrelRecipe) irecipe).getOutFluid()));
-            if (((CachedBarrelRecipe) irecipe).getInFluidRect().contains(relMouse) &&
+            if (recipeInFluidRect().contains(relMouse) &&
                 (((CachedBarrelRecipe) irecipe).getInFluid() != null))
                 currenttip.add(Helper.tooltipForFluid(((CachedBarrelRecipe) irecipe).getInFluid()));
         }
         return currenttip;
+    }
+
+    @Override
+    public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe)
+    {
+        if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe"))
+        {
+            if (transferFluid(gui, recipe, false))
+                return true;
+        }
+        else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage"))
+        {
+            if (transferFluid(gui, recipe, true))
+                return true;
+        }
+
+        return super.keyTyped(gui, keyChar, keyCode, recipe);
+    }
+
+    @Override
+    public boolean mouseClicked(GuiRecipe gui, int button, int recipe)
+    {
+        if (button == 0)
+        {
+            if (transferFluid(gui, recipe, false))
+                return true;
+        }
+        else if (button == 1)
+        {
+            if (transferFluid(gui, recipe, true))
+                return true;
+        }
+
+        return super.mouseClicked(gui, button, recipe);
+    }
+
+    private boolean transferFluid(GuiRecipe gui, int recipe, boolean usage)
+    {
+        CachedRecipe crecipe = arecipes.get(recipe);
+        if (crecipe instanceof CachedBarrelRecipe)
+        {
+            Point mousepos = getMousePosition();
+            Point offset = gui.getRecipePosition(recipe);
+            Point relMouse = new Point(mousepos.x - gui.guiLeft - offset.x, mousepos.y - gui.guiTop - offset.y);
+            ItemStack fluidStack = null;
+            if (recipeOutFluidRect().contains(relMouse) &&
+                (((CachedBarrelRecipe) crecipe).getOutFluid() != null))
+                fluidStack = Helper.getItemStacksForFluid(((CachedBarrelRecipe) crecipe).getOutFluid())[0];
+            if (recipeInFluidRect().contains(relMouse) &&
+                (((CachedBarrelRecipe) crecipe).getInFluid() != null))
+                fluidStack = Helper.getItemStacksForFluid(((CachedBarrelRecipe) crecipe).getInFluid())[0];
+            if (fluidStack != null && (usage ? GuiUsageRecipe.openRecipeGui("item", fluidStack) : GuiCraftingRecipe.openRecipeGui("item", fluidStack)))
+                return true;
+        }
+        return false;
+    }
+
+    public static Rectangle recipeInFluidRect()
+    {
+        return new Rectangle(12, 7, 8, 50);
+    }
+
+    public static Rectangle recipeOutFluidRect()
+    {
+        return new Rectangle(146, 7, 8, 50);
     }
 
     public class CachedBarrelRecipe extends CachedRecipe
@@ -264,16 +331,6 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         public FluidStack getOutFluid()
         {
             return outFluid;
-        }
-
-        public Rectangle getInFluidRect()
-        {
-            return new Rectangle(12, 7, 8, 50);
-        }
-
-        public Rectangle getOutFluidRect()
-        {
-            return new Rectangle(146, 7, 8, 50);
         }
 
         public String sealTimeString()
