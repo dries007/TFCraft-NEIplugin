@@ -37,16 +37,24 @@
 package net.dries007.tfcnei.util;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
+import static codechicken.lib.gui.GuiDraw.gui;
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 import static net.minecraftforge.fluids.FluidContainerRegistry.getRegisteredFluidContainerData;
 
@@ -102,6 +110,20 @@ public class Helper
     public static void drawCenteredString(FontRenderer fontrenderer, String s, int i, int j, int k)
     {
         fontrenderer.drawString(s, i - fontrenderer.getStringWidth(s) / 2, j, k);
+    }
+
+    public static void drawFluidInRect(Fluid fluid, Rectangle rect)
+    {
+        IIcon fluidIcon = fluid.getIcon();
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        int color = fluid.getColor();
+        GL11.glColor4ub((byte)((color >> 16) & 255), (byte)((color >> 8) & 255), (byte)(color & 255), (byte)(0xaa & 255));
+        gui.drawTexturedModelRectFromIcon(rect.x, rect.y, fluidIcon, rect.width, rect.height);
+    }
+
+    public static String tooltipForFluid(FluidStack fluidStack)
+    {
+        return fluidStack.getLocalizedName() + " (" + fluidStack.amount + "mB)";
     }
 
     /**

@@ -36,8 +36,11 @@
 
 package net.dries007.tfcnei.recipeHandlers;
 
+import codechicken.nei.NEIClientConfig;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
 import com.bioxx.tfc.api.Crafting.BarrelBriningRecipe;
@@ -52,26 +55,17 @@ import com.bioxx.tfc.api.Interfaces.IFood;
 import net.dries007.tfcnei.util.Constants;
 import net.dries007.tfcnei.util.Helper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import static codechicken.lib.gui.GuiDraw.*;
-import static com.bioxx.tfc.Core.TFCFluid.BRINE;
+import static codechicken.lib.gui.GuiDraw.getMousePosition;
 import static net.dries007.tfcnei.util.Helper.getItemStacksForFluid;
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 import static net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilledItem;
 
 /**
@@ -80,7 +74,7 @@ import static net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilled
 public class BarrelRecipeHandler extends TemplateRecipeHandler
 {
     private static List<BarrelRecipe> recipeList;
-    private static ItemStack[]        fooditems;
+    private static ItemStack[]        foodToBrine;
     private static ItemStack[]        fruitForVinegar;
 
     @Override
@@ -119,7 +113,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
                         item.getSubItems(item, CreativeTabs.tabAllSearch, fruits);
                 }
             }
-            fooditems = items.toArray(new ItemStack[items.size()]);
+            foodToBrine = items.toArray(new ItemStack[items.size()]);
             fruitForVinegar = fruits.toArray(new ItemStack[fruits.size()]); 
         }
         return super.newInstance();
@@ -137,14 +131,7 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         if (outputId.equals("barrel") && getClass() == BarrelRecipeHandler.class)
         {
             for (BarrelRecipe recipe : recipeList)
-            {
-                if (recipe instanceof BarrelLiquidToLiquidRecipe)
-                    arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
-                else if (recipe instanceof BarrelBriningRecipe)
-                    arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
-                else
-                    arecipes.add(new CachedBarrelRecipe(recipe));
-            }
+                arecipes.add(new CachedBarrelRecipe(recipe));
         }
         else
             super.loadCraftingRecipes(outputId, results);
@@ -158,17 +145,10 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
             ItemStack outItem = recipe.getRecipeOutIS();
             FluidStack outFluid = recipe.getRecipeOutFluid();
 
-            Fluid fluid = null;
-            if (result.getItem() == Item.getItemFromBlock(Blocks.sponge)) fluid = FluidRegistry.getFluid(result.getTagCompound().getString("FLUID"));
-
-            if ((outItem != null && Helper.areItemStacksEqual(result, outItem) || (outFluid != null && (outFluid.isFluidEqual(result) || (fluid != null && outFluid.getFluid() == fluid)))))
+            if ((outItem != null && Helper.areItemStacksEqual(result, outItem)) ||
+                (outFluid != null && outFluid.isFluidEqual(result)))
             {
-                if (recipe instanceof BarrelLiquidToLiquidRecipe)
-                    arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
-                else if (recipe instanceof BarrelBriningRecipe)
-                    arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
-                else
-                    arecipes.add(new CachedBarrelRecipe(recipe));
+                arecipes.add(new CachedBarrelRecipe(recipe));
             }
         }
     }
@@ -179,40 +159,13 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         FluidStack fluidStack = getFluidForFilledItem(ingredient);
         for (BarrelRecipe recipe : recipeList)
         {
-            try
-            {
-                if (Helper.areItemStacksEqual(recipe.getInItem(), ingredient))
-                {
-                    if (recipe instanceof BarrelLiquidToLiquidRecipe)
-                        arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
-                    else if (recipe instanceof BarrelBriningRecipe)
-                        arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
-                    else
-                        arecipes.add(new CachedBarrelRecipe(recipe));
-                }
-            }
-            catch (NullPointerException e)
-            {
-            }
+            ItemStack inItem = recipe.getInItem();
+            FluidStack inFluid = recipe.getInFluid();
 
-            try
+            if ((inItem != null && Helper.areItemStacksEqual(inItem, ingredient)) ||
+                (inFluid != null && inFluid.isFluidEqual(fluidStack)))
             {
-                if (ingredient.getItem() == Item.getItemFromBlock(Blocks.sponge))
-                {
-                    fluidStack = new FluidStack(FluidRegistry.getFluid(ingredient.getTagCompound().getString("FLUID")), ingredient.getMaxStackSize() * BUCKET_VOLUME);
-                }
-                if (recipe.isInFluid(fluidStack))
-                {
-                    if (recipe instanceof BarrelLiquidToLiquidRecipe)
-                        arecipes.add(new CachedBarrelRecipe((BarrelLiquidToLiquidRecipe) recipe));
-                    else if (recipe instanceof BarrelBriningRecipe)
-                        arecipes.add(new CachedBarrelRecipe(recipe.minTechLevel));
-                    else
-                        arecipes.add(new CachedBarrelRecipe(recipe));
-                }
-            }
-            catch (NullPointerException e)
-            {
+                arecipes.add(new CachedBarrelRecipe(recipe));
             }
         }
     }
@@ -220,15 +173,16 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
     @Override
     public void drawExtras(int recipe)
     {
-        super.drawExtras(recipe);
-        CachedRecipe cr = arecipes.get(recipe);
-        if (cr instanceof CachedBarrelRecipe)
+        CachedRecipe crecipe = arecipes.get(recipe);
+        if (crecipe instanceof CachedBarrelRecipe)
         {
-            Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) cr).techLvlString(), 83, 8, 0x820093);
-            Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) cr).sealTimeString(), 83, 48, 0x555555);
+            Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) crecipe).techLvlString(), 83, 8, 0x820093);
+            Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedBarrelRecipe) crecipe).sealTimeString(), 83, 48, 0x555555);
 
-            ((CachedBarrelRecipe) cr).drawInFluid();
-            ((CachedBarrelRecipe) cr).drawOutFluid();
+            if (((CachedBarrelRecipe) crecipe).getInFluid() != null)
+                Helper.drawFluidInRect(((CachedBarrelRecipe) crecipe).getInFluid().getFluid(), recipeInFluidRect());
+            if (((CachedBarrelRecipe) crecipe).getOutFluid() != null)
+                Helper.drawFluidInRect(((CachedBarrelRecipe) crecipe).getOutFluid().getFluid(), recipeOutFluidRect());
         }
     }
 
@@ -236,18 +190,84 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
     public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipe)
     {
         CachedRecipe irecipe = arecipes.get(recipe);
-        Point mousepos = getMousePosition();
-        Point offset = gui.getRecipePosition(recipe);
-        Point relMouse = new Point(mousepos.x - gui.guiLeft - offset.x, mousepos.y - gui.guiTop - offset.y);
-
         if (irecipe instanceof CachedBarrelRecipe)
         {
-            if (((CachedBarrelRecipe) irecipe).getOutFluidRect().contains(relMouse))
-                currenttip.add(((CachedBarrelRecipe) irecipe).getOutFluidTooltip());
-            if (((CachedBarrelRecipe) irecipe).getInFluidRect().contains(relMouse))
-                currenttip.add(((CachedBarrelRecipe) irecipe).getInFluidTooltip());
+            Point mousepos = getMousePosition();
+            Point offset = gui.getRecipePosition(recipe);
+            Point relMouse = new Point(mousepos.x - gui.guiLeft - offset.x, mousepos.y - gui.guiTop - offset.y);
+            if (recipeOutFluidRect().contains(relMouse) &&
+                (((CachedBarrelRecipe) irecipe).getOutFluid() != null))
+                currenttip.add(Helper.tooltipForFluid(((CachedBarrelRecipe) irecipe).getOutFluid()));
+            if (recipeInFluidRect().contains(relMouse) &&
+                (((CachedBarrelRecipe) irecipe).getInFluid() != null))
+                currenttip.add(Helper.tooltipForFluid(((CachedBarrelRecipe) irecipe).getInFluid()));
         }
         return currenttip;
+    }
+
+    @Override
+    public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe)
+    {
+        if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe"))
+        {
+            if (transferFluid(gui, recipe, false))
+                return true;
+        }
+        else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage"))
+        {
+            if (transferFluid(gui, recipe, true))
+                return true;
+        }
+
+        return super.keyTyped(gui, keyChar, keyCode, recipe);
+    }
+
+    @Override
+    public boolean mouseClicked(GuiRecipe gui, int button, int recipe)
+    {
+        if (button == 0)
+        {
+            if (transferFluid(gui, recipe, false))
+                return true;
+        }
+        else if (button == 1)
+        {
+            if (transferFluid(gui, recipe, true))
+                return true;
+        }
+
+        return super.mouseClicked(gui, button, recipe);
+    }
+
+    private boolean transferFluid(GuiRecipe gui, int recipe, boolean usage)
+    {
+        CachedRecipe crecipe = arecipes.get(recipe);
+        if (crecipe instanceof CachedBarrelRecipe)
+        {
+            Point mousepos = getMousePosition();
+            Point offset = gui.getRecipePosition(recipe);
+            Point relMouse = new Point(mousepos.x - gui.guiLeft - offset.x, mousepos.y - gui.guiTop - offset.y);
+            ItemStack fluidStack = null;
+            if (recipeOutFluidRect().contains(relMouse) &&
+                (((CachedBarrelRecipe) crecipe).getOutFluid() != null))
+                fluidStack = Helper.getItemStacksForFluid(((CachedBarrelRecipe) crecipe).getOutFluid())[0];
+            if (recipeInFluidRect().contains(relMouse) &&
+                (((CachedBarrelRecipe) crecipe).getInFluid() != null))
+                fluidStack = Helper.getItemStacksForFluid(((CachedBarrelRecipe) crecipe).getInFluid())[0];
+            if (fluidStack != null && (usage ? GuiUsageRecipe.openRecipeGui("item", fluidStack) : GuiCraftingRecipe.openRecipeGui("item", fluidStack)))
+                return true;
+        }
+        return false;
+    }
+
+    public static Rectangle recipeInFluidRect()
+    {
+        return new Rectangle(12, 7, 8, 50);
+    }
+
+    public static Rectangle recipeOutFluidRect()
+    {
+        return new Rectangle(146, 7, 8, 50);
     }
 
     public class CachedBarrelRecipe extends CachedRecipe
@@ -256,105 +276,61 @@ public class BarrelRecipeHandler extends TemplateRecipeHandler
         PositionedStack inItem, outItem;
         FluidStack      inFluid, outFluid;
 
-        public CachedBarrelRecipe(BarrelLiquidToLiquidRecipe recipe)
-        {
-            this(recipe.minTechLevel, recipe.sealTime, recipe.getInputfluid(), recipe.getInFluid(), recipe.getRecipeOutIS(), recipe.getRecipeOutFluid());
-        }
-
         public CachedBarrelRecipe(BarrelRecipe recipe)
         {
-            this(recipe.minTechLevel, recipe.sealTime, (recipe instanceof BarrelVinegarRecipe) ? fruitForVinegar : recipe.getInItem(), recipe.getInFluid(), recipe.getRecipeOutIS(), (recipe instanceof BarrelMultiItemRecipe) ? null : recipe.getRecipeOutFluid());
-        }
+            this.minTechLevel = recipe.getMinTechLevel();
+            this.sealTime = (recipe.isSealedRecipe()) ? recipe.getSealTime() : 0;
+            this.inFluid = recipe.getInFluid();
+            this.outFluid = recipe.getRecipeOutFluid();
+            setInItem(recipe.getInItem());
+            setOutItem(recipe.getRecipeOutIS());
 
-        public CachedBarrelRecipe(int minTechLevel, int sealTime, FluidStack inFluid1, FluidStack inFluid2, ItemStack outItem, FluidStack outFluid)
-        {
-            this(minTechLevel, sealTime, getItemStacksForFluid(inFluid1), inFluid2, outItem, outFluid);
-        }
-
-        /**
-         * @param inItem Itemstack or ItemStack[]
-         */
-        public CachedBarrelRecipe(int minTechLevel, int sealTime, Object inItem, FluidStack inFluid, ItemStack outItem, FluidStack outFluid)
-        {
-            this.minTechLevel = minTechLevel;
-            this.sealTime = sealTime;
-            this.inItem = inItem == null ? null : new PositionedStack(inItem, 39, 24);
-            this.outItem = outItem == null ? null : new PositionedStack(outItem, 111, 24);
-            this.inFluid = inFluid;
-            this.outFluid = outFluid;
-        }
-
-        public CachedBarrelRecipe(int minTechLevel)
-        {
-            this.minTechLevel = minTechLevel;
-            this.sealTime = 0;
-            this.inItem = new PositionedStack(fooditems, 39, 24);
-            this.outItem = new PositionedStack(fooditems, 111, 24);
-            this.inFluid = new FluidStack(BRINE, BUCKET_VOLUME);
+            if (recipe instanceof BarrelLiquidToLiquidRecipe)
+                setInItem(getItemStacksForFluid(((BarrelLiquidToLiquidRecipe) recipe).getInputfluid()));
+            if (recipe instanceof BarrelMultiItemRecipe)
+                this.outFluid = null;
+            if (recipe instanceof BarrelVinegarRecipe)
+                setInItem(fruitForVinegar);
+            if (recipe instanceof BarrelBriningRecipe)
+            {
+                this.outFluid = null;
+                setInItem(foodToBrine);
+                setOutItem(foodToBrine);
+            }
         }
 
         @Override
         public PositionedStack getIngredient()
         {
-            if (inItem != null) randomRenderPermutation(inItem, cycleticks / 12);
+            if (inItem != null) randomRenderPermutation(inItem, cycleticks / 24);
             return inItem;
         }
 
         @Override
         public PositionedStack getResult()
         {
-            if (outItem != null) randomRenderPermutation(outItem, cycleticks / 12);
+            if (outItem != null) randomRenderPermutation(outItem, cycleticks / 24);
             return outItem;
         }
 
-        public Rectangle getInFluidRect()
+        public void setInItem(Object inItem)
         {
-            return new Rectangle(11, 6, 10, 52);
+            this.inItem = inItem == null ? null : new PositionedStack(inItem, 39, 24);
         }
 
-        public String getInFluidTooltip()
+        public void setOutItem(Object outItem)
         {
-            if (inFluid != null)
-                return inFluid.getLocalizedName() + " (" + inFluid.amount + "mB)";
-            else
-                return "Empty";
+            this.outItem = outItem == null ? null : new PositionedStack(outItem, 111, 24);
         }
 
-        public void drawInFluid()
+        public FluidStack getInFluid()
         {
-            if (inFluid != null)
-            {
-                IIcon inFluidIcon = inFluid.getFluid().getIcon();
-                Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-                int color = inFluid.getFluid().getColor();
-                GL11.glColor4ub((byte)((color >> 16) & 255), (byte)((color >> 8) & 255), (byte)(color & 255), (byte)(0xaa & 255));
-                gui.drawTexturedModelRectFromIcon(12, 7, inFluidIcon, 8, 50);
-            }
+            return inFluid;
         }
 
-        public Rectangle getOutFluidRect()
+        public FluidStack getOutFluid()
         {
-            return new Rectangle(145, 6, 10, 52);
-        }
-
-        public String getOutFluidTooltip()
-        {
-            if (outFluid != null)
-                return outFluid.getLocalizedName() + " (" + outFluid.amount + "mB)";
-            else
-                return "Empty";
-        }
-
-        public void drawOutFluid()
-        {
-            if (outFluid != null)
-            {
-                IIcon outFluidIcon = outFluid.getFluid().getIcon();
-                Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-                int color = outFluid.getFluid().getColor();
-                GL11.glColor4ub((byte)((color >> 16) & 255), (byte)((color >> 8) & 255), (byte)(color & 255), (byte)(0xaa & 255));
-                gui.drawTexturedModelRectFromIcon(146, 7, outFluidIcon, 8, 50);
-            }
+            return outFluid;
         }
 
         public String sealTimeString()
