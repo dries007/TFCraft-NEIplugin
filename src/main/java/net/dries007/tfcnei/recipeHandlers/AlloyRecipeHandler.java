@@ -43,7 +43,7 @@ import com.bioxx.tfc.Core.Metal.AlloyManager;
 import com.bioxx.tfc.Core.Metal.AlloyMetal;
 import com.bioxx.tfc.Core.Metal.AlloyMetalCompare;
 import com.bioxx.tfc.Items.ItemOre;
-import com.bioxx.tfc.TFCItems;
+import com.bioxx.tfc.ItemSetup;
 import com.bioxx.tfc.api.Metal;
 import com.google.common.collect.HashMultimap;
 import net.dries007.tfcnei.util.Constants;
@@ -91,8 +91,8 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
         {
             alloyList = AlloyManager.instance.Alloys;
             Metal metal;
-            ItemStack itemStack = new ItemStack(TFCItems.OreChunk);
-            while ((metal = ((ItemOre) TFCItems.OreChunk).GetMetalType(itemStack)) != null)
+            ItemStack itemStack = new ItemStack(ItemSetup.OreChunk);
+            while ((metal = ((ItemOre) ItemSetup.OreChunk).GetMetalType(itemStack)) != null)
             {
                 metalItemMap.put(metal, itemStack.copy());
                 itemStack.setItemDamage(itemStack.getItemDamage() + 1);
