@@ -39,7 +39,7 @@ package net.dries007.tfcnei.recipeHandlers;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.bioxx.tfc.Reference;
-import com.bioxx.tfc.ItemSetup;
+import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.QuernManager;
 import com.bioxx.tfc.api.Crafting.QuernRecipe;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -103,7 +103,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
     public void loadUsageRecipes(ItemStack ingredient)
     {
         for (QuernRecipe recipe : recipeList)
-            if (ingredient.getItem() == ItemSetup.Quern || Helper.areItemStacksEqual(ingredient, recipe.getInItem()))
+            if (ingredient.getItem() == TFCItems.Quern || Helper.areItemStacksEqual(ingredient, recipe.getInItem()))
                 arecipes.add(new CachedQuernRecipe(recipe));
     }
 
@@ -146,7 +146,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
         @Override
         public PositionedStack getOtherStack()
         {
-            return new PositionedStack(new ItemStack(ItemSetup.Quern), 88, 9);
+            return new PositionedStack(new ItemStack(TFCItems.Quern), 88, 9);
         }
     }
 }

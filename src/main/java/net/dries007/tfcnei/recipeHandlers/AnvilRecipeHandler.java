@@ -41,7 +41,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.bioxx.tfc.Core.Recipes;
 import com.bioxx.tfc.GUI.GuiAnvil;
 import com.bioxx.tfc.Items.Tools.ItemHammer;
-import com.bioxx.tfc.ItemSetup;
+import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.AnvilManager;
 import com.bioxx.tfc.api.Crafting.AnvilRecipe;
 import com.bioxx.tfc.api.Crafting.AnvilReq;
@@ -120,7 +120,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             for (AnvilRecipe recipe : recipeList) arecipes.add(new CachedAnvilRecipe(HAMMER_NORMAL, recipe));
             for (AnvilRecipe recipe : weldRecipeList) arecipes.add(new CachedAnvilRecipe(HAMMER_WELD, recipe));
         }
-        else if (ingredient.getItem() == ItemSetup.Powder && ingredient.getItemDamage() == 0)
+        else if (ingredient.getItem() == TFCItems.Powder && ingredient.getItemDamage() == 0)
         {
             for (AnvilRecipe recipe : weldRecipeList) arecipes.add(new CachedAnvilRecipe(WELD, recipe));
         }
@@ -247,7 +247,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             List<PositionedStack> stacks = new ArrayList<>();
 
             stacks.add(new PositionedStack(hammers, -14, 100, false));
-            if (type.isWeld()) stacks.add(new PositionedStack(new ItemStack(ItemSetup.Powder), 164, 100));
+            if (type.isWeld()) stacks.add(new PositionedStack(new ItemStack(TFCItems.Powder), 164, 100));
             return stacks;
         }
     }
