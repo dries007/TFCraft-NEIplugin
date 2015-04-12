@@ -41,10 +41,10 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.bioxx.tfc.Core.Recipes;
 import com.bioxx.tfc.GUI.GuiAnvil;
 import com.bioxx.tfc.Items.Tools.ItemHammer;
-import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.AnvilManager;
 import com.bioxx.tfc.api.Crafting.AnvilRecipe;
 import com.bioxx.tfc.api.Crafting.AnvilReq;
+import com.bioxx.tfc.api.TFCItems;
 import net.dries007.tfcnei.util.Helper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -101,8 +101,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             for (AnvilRecipe recipe : recipeList) arecipes.add(new CachedAnvilRecipe(NORMAL, recipe));
             for (AnvilRecipe recipe : weldRecipeList) arecipes.add(new CachedAnvilRecipe(WELD, recipe));
         }
-        else
-            super.loadCraftingRecipes(outputId, results);
+        else super.loadCraftingRecipes(outputId, results);
     }
 
     @Override
@@ -187,7 +186,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
         if (cr instanceof CachedAnvilRecipe) Helper.drawCenteredString(Minecraft.getMinecraft().fontRenderer, ((CachedAnvilRecipe) cr).anvilReq, 80, -3, 0x820093);
     }
 
-    public static enum TYPE
+    public enum TYPE
     {
         NORMAL, WELD, HAMMER_NORMAL, HAMMER_WELD;
 
@@ -199,9 +198,11 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
 
     public class CachedAnvilRecipe extends CachedRecipe
     {
-        PositionedStack i1, i2, out;
-        TYPE type;
-        public String anvilReq;
+        PositionedStack i1;
+        PositionedStack i2;
+        final PositionedStack out;
+        final TYPE type;
+        public final String anvilReq;
 
         public CachedAnvilRecipe(TYPE type, AnvilRecipe recipe)
         {
@@ -227,11 +228,9 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
         @Override
         public List<PositionedStack> getIngredients()
         {
-            ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
-            if (i1 != null)
-                stacks.add(i1);
-            if (i2 != null)
-                stacks.add(i2);
+            ArrayList<PositionedStack> stacks = new ArrayList<>();
+            if (i1 != null) stacks.add(i1);
+            if (i2 != null) stacks.add(i2);
             return stacks;
         }
 

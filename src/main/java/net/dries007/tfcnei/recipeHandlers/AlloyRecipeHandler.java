@@ -43,8 +43,8 @@ import com.bioxx.tfc.Core.Metal.AlloyManager;
 import com.bioxx.tfc.Core.Metal.AlloyMetal;
 import com.bioxx.tfc.Core.Metal.AlloyMetalCompare;
 import com.bioxx.tfc.Items.ItemOre;
-import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Metal;
+import com.bioxx.tfc.api.TFCItems;
 import com.google.common.collect.HashMultimap;
 import net.dries007.tfcnei.util.Constants;
 import net.dries007.tfcnei.util.Helper;
@@ -63,7 +63,7 @@ import java.util.List;
 public class AlloyRecipeHandler extends TemplateRecipeHandler
 {
     private static List<Alloy> alloyList;
-    private static HashMultimap<Metal, ItemStack> metalItemMap = HashMultimap.create();
+    private static final HashMultimap<Metal, ItemStack> metalItemMap = HashMultimap.create();
 
     @Override
     public String getGuiTexture()
@@ -147,15 +147,15 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
         if (cr instanceof CachedAlloyRecipe) ((CachedAlloyRecipe) cr).drawExtras();
     }
 
-    public static final int SPACING = 30;
+    private static final int SPACING = 30;
 
     public class CachedAlloyRecipe extends CachedRecipe
     {
-        private PositionedStack outItem;
-        private ArrayList<PositionedStack> ingredients = new ArrayList<>();
-        private ArrayList<String>          min         = new ArrayList<>();
-        private ArrayList<String>          max         = new ArrayList<>();
-        private String                     tech        = "?";
+        private final PositionedStack outItem;
+        private final ArrayList<PositionedStack> ingredients = new ArrayList<>();
+        private final ArrayList<String> min = new ArrayList<>();
+        private final ArrayList<String> max = new ArrayList<>();
+        private String tech = "?";
 
         public CachedAlloyRecipe(Alloy recipe)
         {

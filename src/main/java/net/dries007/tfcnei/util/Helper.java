@@ -47,12 +47,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.lwjgl.opengl.GL11;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.lwjgl.opengl.GL11;
 
 import static codechicken.lib.gui.GuiDraw.gui;
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
@@ -117,7 +116,7 @@ public class Helper
         IIcon fluidIcon = fluid.getIcon();
         Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
         int color = fluid.getColor();
-        GL11.glColor4ub((byte)((color >> 16) & 255), (byte)((color >> 8) & 255), (byte)(color & 255), (byte)(0xaa & 255));
+        GL11.glColor4ub((byte) ((color >> 16) & 255), (byte) ((color >> 8) & 255), (byte) (color & 255), (byte) (0xaa & 255));
         gui.drawTexturedModelRectFromIcon(rect.x, rect.y, fluidIcon, rect.width, rect.height);
     }
 

@@ -55,7 +55,7 @@ import static net.dries007.tfcnei.util.Constants.MODID;
 public class TerraFirmaCraftNEIplugin
 {
     @SidedProxy(clientSide = "net.dries007.tfcnei.ClientProxy", serverSide = "net.dries007.tfcnei.CommonProxy", modId = MODID)
-    public static CommonProxy proxy;
+    private static CommonProxy proxy;
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event)

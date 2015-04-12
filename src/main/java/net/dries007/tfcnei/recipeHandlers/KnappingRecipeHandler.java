@@ -41,9 +41,9 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.bioxx.tfc.Items.ItemFlatGeneric;
 import com.bioxx.tfc.Items.ItemLooseRock;
 import com.bioxx.tfc.Reference;
-import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.CraftingManagerTFC;
 import com.bioxx.tfc.api.Crafting.ShapedRecipesTFC;
+import com.bioxx.tfc.api.TFCItems;
 import net.dries007.tfcnei.util.Helper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,7 +59,7 @@ import java.util.List;
 public class KnappingRecipeHandler extends TemplateRecipeHandler
 {
     private static List<ShapedRecipesTFC> recipeList;
-
+    
     @Override
     public String getGuiTexture()
     {
@@ -82,7 +82,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     @Override
     public TemplateRecipeHandler newInstance()
     {
-        if (recipeList == null) 
+        if (recipeList == null)
         {
             recipeList = new ArrayList<>();
             List<IRecipe> allRecipes = CraftingManagerTFC.getInstance().getRecipeList();
@@ -122,8 +122,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
             for (ShapedRecipesTFC recipe : recipeList)
                 arecipes.add(new CachedKnappingRecipe(recipe));
         }
-        else
-            super.loadCraftingRecipes(outputId, results);
+        else super.loadCraftingRecipes(outputId, results);
     }
 
     @Override
@@ -131,8 +130,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     {
         for (ShapedRecipesTFC recipe : recipeList)
         {
-            if (Helper.areItemStacksEqual(result, recipe.getRecipeOutput()))
-                arecipes.add(new CachedKnappingRecipe(recipe));
+            if (Helper.areItemStacksEqual(result, recipe.getRecipeOutput())) arecipes.add(new CachedKnappingRecipe(recipe));
         }
     }
 
@@ -162,9 +160,9 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
 
     public class CachedKnappingRecipe extends CachedRecipe
     {
-        List<PositionedStack> inputs;
-        PositionedStack       result;
-        PositionedStack       actualInput;
+        final List<PositionedStack> inputs;
+        final PositionedStack result;
+        PositionedStack actualInput;
 
         public CachedKnappingRecipe(ShapedRecipesTFC recipe)
         {

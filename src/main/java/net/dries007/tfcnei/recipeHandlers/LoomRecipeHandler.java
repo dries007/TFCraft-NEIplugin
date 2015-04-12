@@ -40,7 +40,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.bioxx.tfc.api.Crafting.LoomManager;
 import com.bioxx.tfc.api.Crafting.LoomRecipe;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.dries007.tfcnei.util.Constants;
 import net.dries007.tfcnei.util.Helper;
 import net.minecraft.item.ItemStack;
@@ -86,8 +85,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
         {
             for (LoomRecipe recipe : recipeList) arecipes.add(new CachedLoomRecipe(recipe));
         }
-        else
-            super.loadCraftingRecipes(outputId, results);
+        else super.loadCraftingRecipes(outputId, results);
     }
 
     @SuppressWarnings("unchecked")
@@ -104,8 +102,7 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
         for (LoomRecipe recipe : recipeList)
         {
             ItemStack out = recipe.getOutItemStack();
-            if (Helper.areItemStacksEqual(result, out))
-                arecipes.add(new CachedLoomRecipe(recipe.getInItem(), out));
+            if (Helper.areItemStacksEqual(result, out)) arecipes.add(new CachedLoomRecipe(recipe.getInItem(), out));
         }
     }
 
@@ -113,14 +110,13 @@ public class LoomRecipeHandler extends TemplateRecipeHandler
     public void loadUsageRecipes(ItemStack ingredient)
     {
         for (LoomRecipe recipe : recipeList)
-            if (Helper.areItemStacksEqual(ingredient, recipe.getInItem()))
-                arecipes.add(new CachedLoomRecipe(recipe));
+            if (Helper.areItemStacksEqual(ingredient, recipe.getInItem())) arecipes.add(new CachedLoomRecipe(recipe));
     }
 
     public class CachedLoomRecipe extends CachedRecipe
     {
-        PositionedStack ingred;
-        PositionedStack result;
+        final PositionedStack ingred;
+        final PositionedStack result;
 
         public CachedLoomRecipe(ItemStack ingred, ItemStack result)
         {

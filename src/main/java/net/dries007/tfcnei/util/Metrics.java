@@ -184,9 +184,9 @@ public class Metrics
         return true;
     }
 
-    private Thread  thrd      = null;
+    private Thread thrd = null;
     private boolean firstPost = true;
-    int tickCount;
+    private int tickCount;
 
     @SubscribeEvent
     public void tick(TickEvent.ServerTickEvent tick)
@@ -263,7 +263,7 @@ public class Metrics
      *
      * @return true if metrics should be opted out of it
      */
-    public boolean isOptOut()
+    private boolean isOptOut()
     {
         // Reload the metrics file
         configuration.load();
@@ -310,7 +310,7 @@ public class Metrics
      *
      * @return the File object for the config file
      */
-    public File getConfigFile()
+    private File getConfigFile()
     {
         return new File(Loader.instance().getConfigDir(), "PluginMetrics.cfg");
     }
@@ -511,7 +511,7 @@ public class Metrics
      * @param input
      * @return
      */
-    public static byte[] gzip(String input)
+    private static byte[] gzip(String input)
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         GZIPOutputStream gzos = null;
@@ -746,7 +746,7 @@ public class Metrics
         /**
          * Called when the server owner decides to opt-out of BukkitMetrics while the server is running.
          */
-        protected void onOptOut()
+        void onOptOut()
         {
         }
     }

@@ -87,8 +87,7 @@ public class KilnRecipeHandler extends TemplateRecipeHandler
         {
             for (KilnRecipe recipe : recipeList) arecipes.add(new CachedKilnRecipe(recipe));
         }
-        else
-            super.loadCraftingRecipes(outputId, results);
+        else super.loadCraftingRecipes(outputId, results);
     }
 
     @SuppressWarnings("unchecked")
@@ -103,8 +102,7 @@ public class KilnRecipeHandler extends TemplateRecipeHandler
     public void loadCraftingRecipes(ItemStack result)
     {
         for (KilnRecipe recipe : recipeList)
-            if (Helper.areItemStacksEqual(result, recipe.getCraftingResult()))
-                arecipes.add(new CachedKilnRecipe(recipe));
+            if (Helper.areItemStacksEqual(result, recipe.getCraftingResult())) arecipes.add(new CachedKilnRecipe(recipe));
     }
 
     @Override
@@ -112,15 +110,14 @@ public class KilnRecipeHandler extends TemplateRecipeHandler
     {
         for (KilnRecipe recipe : recipeList)
         {
-            if (Helper.areItemStacksEqual(ingredient, recipe.getInput1()))
-                arecipes.add(new CachedKilnRecipe(recipe.getInput1(), recipe.getCraftingResult()));
+            if (Helper.areItemStacksEqual(ingredient, recipe.getInput1())) arecipes.add(new CachedKilnRecipe(recipe.getInput1(), recipe.getCraftingResult()));
         }
     }
 
     public class CachedKilnRecipe extends CachedRecipe
     {
-        PositionedStack ingred;
-        PositionedStack result;
+        final PositionedStack ingred;
+        final PositionedStack result;
 
         public CachedKilnRecipe(ItemStack ingred, ItemStack result)
         {

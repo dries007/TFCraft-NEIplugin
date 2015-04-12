@@ -39,10 +39,9 @@ package net.dries007.tfcnei.recipeHandlers;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.bioxx.tfc.Reference;
-import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Crafting.QuernManager;
 import com.bioxx.tfc.api.Crafting.QuernRecipe;
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import com.bioxx.tfc.api.TFCItems;
 import net.dries007.tfcnei.util.Helper;
 import net.minecraft.item.ItemStack;
 
@@ -87,38 +86,34 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
         {
             for (QuernRecipe recipe : recipeList) arecipes.add(new CachedQuernRecipe(recipe));
         }
-        else
-            super.loadCraftingRecipes(outputId, results);
+        else super.loadCraftingRecipes(outputId, results);
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack result)
     {
         for (QuernRecipe recipe : recipeList)
-            if (Helper.areItemStacksEqual(result, recipe.getResult()))
-                arecipes.add(new CachedQuernRecipe(recipe));
+            if (Helper.areItemStacksEqual(result, recipe.getResult())) arecipes.add(new CachedQuernRecipe(recipe));
     }
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient)
     {
         for (QuernRecipe recipe : recipeList)
-            if (ingredient.getItem() == TFCItems.Quern || Helper.areItemStacksEqual(ingredient, recipe.getInItem()))
-                arecipes.add(new CachedQuernRecipe(recipe));
+            if (ingredient.getItem() == TFCItems.Quern || Helper.areItemStacksEqual(ingredient, recipe.getInItem())) arecipes.add(new CachedQuernRecipe(recipe));
     }
 
     @Override
     public TemplateRecipeHandler newInstance()
     {
-        if (recipeList == null) //noinspection unchecked
-            recipeList = (List<QuernRecipe>) QuernManager.getInstance().getRecipes();
+        if (recipeList == null) recipeList = QuernManager.getInstance().getRecipes();
         return super.newInstance();
     }
 
     public class CachedQuernRecipe extends CachedRecipe
     {
-        PositionedStack ingred;
-        PositionedStack result;
+        final PositionedStack ingred;
+        final PositionedStack result;
 
         public CachedQuernRecipe(ItemStack ingred, ItemStack result)
         {
