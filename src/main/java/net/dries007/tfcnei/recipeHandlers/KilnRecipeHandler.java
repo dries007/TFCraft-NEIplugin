@@ -102,7 +102,9 @@ public class KilnRecipeHandler extends TemplateRecipeHandler
     public void loadCraftingRecipes(ItemStack result)
     {
         for (KilnRecipe recipe : recipeList)
+        {
             if (Helper.areItemStacksEqual(result, recipe.getCraftingResult())) arecipes.add(new CachedKilnRecipe(recipe));
+        }
     }
 
     @Override

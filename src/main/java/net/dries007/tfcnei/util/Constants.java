@@ -48,4 +48,5 @@ public class Constants
     public static final ResourceLocation LOOM_TEXTURE = new ResourceLocation(MODID.toLowerCase(), "textures/gui/loom.png");
     public static final ResourceLocation BARREL_TEXTURE = new ResourceLocation(MODID.toLowerCase(), "textures/gui/barrel.png");
     public static final ResourceLocation ALLOY_TEXTURE = new ResourceLocation(MODID.toLowerCase(), "textures/gui/alloy.png");
+    public static final ResourceLocation HEATING_TEXTURE = new ResourceLocation(MODID.toLowerCase(), "textures/gui/heating.png");
 }

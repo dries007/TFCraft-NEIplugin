@@ -42,6 +42,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkCheckHandler;
 import cpw.mods.fml.relauncher.Side;
 import net.dries007.tfcnei.util.Metrics;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Map;
@@ -54,12 +55,15 @@ import static net.dries007.tfcnei.util.Constants.MODID;
 @Mod(modid = MODID)
 public class TerraFirmaCraftNEIplugin
 {
+    public static Logger log;
+
     @SidedProxy(clientSide = "net.dries007.tfcnei.ClientProxy", serverSide = "net.dries007.tfcnei.CommonProxy", modId = MODID)
     private static CommonProxy proxy;
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event)
     {
+        log = event.getModLog();
         proxy.preinit();
         try
         {

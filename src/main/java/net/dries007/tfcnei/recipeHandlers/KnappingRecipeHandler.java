@@ -59,7 +59,7 @@ import java.util.List;
 public class KnappingRecipeHandler extends TemplateRecipeHandler
 {
     private static List<ShapedRecipesTFC> recipeList;
-    
+
     @Override
     public String getGuiTexture()
     {

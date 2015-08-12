@@ -127,10 +127,10 @@ public class Helper
 
     /**
      * true if both null
-     * true if items are equal and [ meta are equal or if inputStack's meta is wildcard ]
+     * true if items are equal and [ meta are equal or if target's meta is wildcard ]
      */
-    public static boolean areItemStacksEqual(ItemStack inputStack, ItemStack recipeStack)
+    public static boolean areItemStacksEqual(ItemStack input, ItemStack target)
     {
-        return inputStack == recipeStack || OreDictionary.itemMatches(recipeStack, inputStack, false);
+        return input == target || OreDictionary.itemMatches(target, input, false);
     }
 }
