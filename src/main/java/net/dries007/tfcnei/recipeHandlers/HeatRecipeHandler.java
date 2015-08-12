@@ -100,7 +100,7 @@ public class HeatRecipeHandler extends TemplateRecipeHandler
         {
             for (HeatIndex recipe : recipeList)
             {
-                if (isValid(recipe)) arecipes.add(new CachedHeatRecipe(recipe));
+                arecipes.add(new CachedHeatRecipe(recipe));
             }
         }
         else super.loadCraftingRecipes(outputId, results);
@@ -112,7 +112,7 @@ public class HeatRecipeHandler extends TemplateRecipeHandler
     {
         if (recipeList == null)
         {
-            recipeList = Helper.getPrivateValue(HeatRegistry.class, List.class, HeatRegistry.getInstance(), "heatList");
+            recipeList = HeatRegistry.getInstance().getHeatList();
             firepit = Item.getItemFromBlock(TFCBlocks.Firepit);
             grill = Item.getItemFromBlock(TFCBlocks.Grill);
             forge = Item.getItemFromBlock(TFCBlocks.Forge);
@@ -158,28 +158,23 @@ public class HeatRecipeHandler extends TemplateRecipeHandler
 
     private boolean isValidForFirepit(HeatIndex recipe)
     {
-        return isValid(recipe) && firepitSlot.isItemValid(recipe.input) && recipe.meltTemp < 1360;
+        return firepitSlot.isItemValid(recipe.input) && recipe.meltTemp < 1360;
     }
 
     private boolean isValidForGrill(HeatIndex recipe)
     {
-        return isValid(recipe) && grillSlot.isItemValid(recipe.input) && recipe.meltTemp < 1360;
+        return grillSlot.isItemValid(recipe.input) && recipe.meltTemp < 1360;
     }
 
     private boolean isValidForForge(HeatIndex recipe)
     {
-        return isValid(recipe) && !(recipe.input.getItem() instanceof ItemOre) && !(recipe.input.getItem() instanceof ItemFoodTFC);
+        return !(recipe.input.getItem() instanceof ItemOre) && !(recipe.input.getItem() instanceof ItemFoodTFC);
     }
 
     private boolean isValidForCrucible(HeatIndex recipe)
     {
         Item item = recipe.input.getItem();
-        return isValid(recipe) && ((item instanceof ISmeltable && ((ISmeltable)item).isSmeltable(recipe.input)) || item instanceof ItemMeltedMetal) && item != TFCItems.RawBloom && (item != TFCItems.Bloom || recipe.input.getItemDamage() <= 100) && !TFC_Core.isOreIron(recipe.input);
-    }
-
-    private boolean isValid(HeatIndex recipe)
-    {
-        return (recipe.input.getItem() != TFCItems.SmallOreChunk || recipe.input.getItemDamage() < 14); //todo: fix bug in TFC
+        return ((item instanceof ISmeltable && ((ISmeltable)item).isSmeltable(recipe.input)) || item instanceof ItemMeltedMetal) && item != TFCItems.RawBloom && (item != TFCItems.Bloom || recipe.input.getItemDamage() <= 100) && !TFC_Core.isOreIron(recipe.input);
     }
 
     public class CachedHeatRecipe extends CachedRecipe
