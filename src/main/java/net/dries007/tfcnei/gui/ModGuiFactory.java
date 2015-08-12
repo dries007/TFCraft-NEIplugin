@@ -34,77 +34,63 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.dries007.tfcnei;
+package net.dries007.tfcnei.gui;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.NetworkCheckHandler;
-import cpw.mods.fml.relauncher.Side;
-import net.dries007.tfcnei.util.Metrics;
+import com.bioxx.tfc.Reference;
+import com.bioxx.tfc.TerraFirmaCraft;
+import com.google.common.collect.ImmutableList;
+import cpw.mods.fml.client.IModGuiFactory;
+import cpw.mods.fml.client.config.DummyConfigElement;
+import cpw.mods.fml.client.config.GuiConfig;
+import cpw.mods.fml.client.config.IConfigElement;
+import net.dries007.tfcnei.TerraFirmaCraftNEIplugin;
+import net.dries007.tfcnei.util.Constants;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
-import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
-import static net.dries007.tfcnei.util.Constants.MODID;
+import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
 /**
  * @author Dries007
  */
-@Mod(modid = MODID, guiFactory = "net.dries007.tfcnei.gui.ModGuiFactory")
-public class TerraFirmaCraftNEIplugin
+@SuppressWarnings("unused")
+public class ModGuiFactory implements IModGuiFactory
 {
-    public static Logger log;
-
-    @Mod.Instance(MODID)
-    public static TerraFirmaCraftNEIplugin instance;
-
-    @SidedProxy(clientSide = "net.dries007.tfcnei.ClientProxy", serverSide = "net.dries007.tfcnei.CommonProxy", modId = MODID)
-    private static CommonProxy proxy;
-
-    private Configuration cfg;
-
-    public Configuration getCfg()
+    @Override
+    public void initialize(Minecraft minecraftInstance)
     {
-        return cfg;
+
     }
 
-    @Mod.EventHandler
-    public void preinit(FMLPreInitializationEvent event)
+    @Override
+    public Class<? extends GuiScreen> mainConfigGuiClass()
     {
-        log = event.getModLog();
+        return ConfigClass.class;
+    }
 
-        FMLCommonHandler.instance().bus().register(this);
+    @Override
+    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories()
+    {
+        return null;
+    }
 
-        cfg = new Configuration(event.getSuggestedConfigurationFile());
-        proxy.config(cfg);
-        if (cfg.hasChanged()) cfg.save();
+    @Override
+    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element)
+    {
+        return null;
+    }
 
-        try
+    public static class ConfigClass extends GuiConfig
+    {
+        public ConfigClass(GuiScreen parentScreen)
         {
-            new Metrics(MODID, event.getModMetadata().version).start();
+            //noinspection unchecked
+            super(parentScreen, new ConfigElement(TerraFirmaCraftNEIplugin.instance.getCfg().getCategory(CATEGORY_GENERAL)).getChildElements(), Constants.MODID, false, false, Constants.MODID);
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @SubscribeEvent
-    public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent eventArgs)
-    {
-        proxy.config(cfg);
-        if (cfg.hasChanged()) cfg.save();
-    }
-
-    @NetworkCheckHandler
-    public boolean checkVersion(Map<String, String> mods, Side side)
-    {
-        return true;
     }
 }

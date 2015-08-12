@@ -36,12 +36,14 @@
 
 package net.dries007.tfcnei;
 
+import net.minecraftforge.common.config.Configuration;
+
 /**
  * @author Dries007
  */
 public class CommonProxy
 {
-    public void preinit()
+    public void config(Configuration cfg)
     {
 
     }

@@ -37,48 +37,124 @@
 package net.dries007.tfcnei;
 
 import codechicken.nei.api.API;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import codechicken.nei.recipe.GuiCraftingRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import net.dries007.tfcnei.recipeHandlers.*;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.common.config.Configuration;
+
+import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
 /**
  * @author Dries007
  */
 public class ClientProxy extends CommonProxy
 {
+    boolean anvil, quern, kiln, loom, knapping, barrel, alloy, heat;
+
+    private final AnvilRecipeHandler anvilRecipeHandler = new AnvilRecipeHandler();
+    private final QuernRecipeHandler quernRecipeHandler = new QuernRecipeHandler();
+    private final KilnRecipeHandler kilnRecipeHandler = new KilnRecipeHandler();
+    private final LoomRecipeHandler loomRecipeHandler = new LoomRecipeHandler();
+    private final KnappingRecipeHandler knappingRecipeHandler = new KnappingRecipeHandler();
+    private final BarrelRecipeHandler barrelRecipeHandler = new BarrelRecipeHandler();
+    private final AlloyRecipeHandler alloyRecipeHandler = new AlloyRecipeHandler();
+    private final HeatRecipeHandler heatRecipeHandler = new HeatRecipeHandler();
+
     @Override
-    public void preinit()
+    public void config(Configuration cfg)
     {
-        super.preinit();
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+        super.config(cfg);
 
-    @SubscribeEvent
-    public void tickEvent(WorldEvent.Load loadEvent)
-    {
-        API.registerRecipeHandler(new AnvilRecipeHandler());
-        API.registerUsageHandler(new AnvilRecipeHandler());
+        TerraFirmaCraftNEIplugin.log.info("Updating TerraFirmaCraftNEIplugin modules...");
 
-        API.registerRecipeHandler(new QuernRecipeHandler());
-        API.registerUsageHandler(new QuernRecipeHandler());
+        anvil = cfg.getBoolean("anvil", CATEGORY_GENERAL, true, "");
+        quern = cfg.getBoolean("quern", CATEGORY_GENERAL, true, "");
+        kiln = cfg.getBoolean("kiln", CATEGORY_GENERAL, true, "");
+        loom = cfg.getBoolean("loom", CATEGORY_GENERAL, true, "");
+        knapping = cfg.getBoolean("knapping", CATEGORY_GENERAL, true, "");
+        barrel = cfg.getBoolean("barrel", CATEGORY_GENERAL, true, "");
+        alloy = cfg.getBoolean("alloy", CATEGORY_GENERAL, true, "");
+        heat = cfg.getBoolean("heat", CATEGORY_GENERAL, true, "");
 
-        API.registerRecipeHandler(new KilnRecipeHandler());
-        API.registerUsageHandler(new KilnRecipeHandler());
-
-        API.registerRecipeHandler(new LoomRecipeHandler());
-        API.registerUsageHandler(new LoomRecipeHandler());
-
-        API.registerRecipeHandler(new KnappingRecipeHandler());
-        API.registerUsageHandler(new KnappingRecipeHandler());
-
-        API.registerRecipeHandler(new BarrelRecipeHandler());
-        API.registerUsageHandler(new BarrelRecipeHandler());
-
-        API.registerRecipeHandler(new AlloyRecipeHandler());
-        API.registerUsageHandler(new AlloyRecipeHandler());
-
-        API.registerRecipeHandler(new HeatRecipeHandler());
-        API.registerUsageHandler(new HeatRecipeHandler());
+        if (anvil)
+        {
+            API.registerRecipeHandler(anvilRecipeHandler);
+            API.registerUsageHandler(anvilRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(anvilRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(anvilRecipeHandler);
+        }
+        if (quern)
+        {
+            API.registerRecipeHandler(quernRecipeHandler);
+            API.registerUsageHandler(quernRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(quernRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(quernRecipeHandler);
+        }
+        if (kiln)
+        {
+            API.registerRecipeHandler(kilnRecipeHandler);
+            API.registerUsageHandler(kilnRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(kilnRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(kilnRecipeHandler);
+        }
+        if (loom)
+        {
+            API.registerRecipeHandler(loomRecipeHandler);
+            API.registerUsageHandler(loomRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(loomRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(loomRecipeHandler);
+        }
+        if (knapping)
+        {
+            API.registerRecipeHandler(knappingRecipeHandler);
+            API.registerUsageHandler(knappingRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(knappingRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(knappingRecipeHandler);
+        }
+        if (barrel)
+        {
+            API.registerRecipeHandler(barrelRecipeHandler);
+            API.registerUsageHandler(barrelRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(barrelRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(barrelRecipeHandler);
+        }
+        if (alloy)
+        {
+            API.registerRecipeHandler(alloyRecipeHandler);
+            API.registerUsageHandler(alloyRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(alloyRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(alloyRecipeHandler);
+        }
+        if (heat)
+        {
+            API.registerRecipeHandler(heatRecipeHandler);
+            API.registerUsageHandler(heatRecipeHandler);
+        }
+        else
+        {
+            GuiCraftingRecipe.craftinghandlers.remove(heatRecipeHandler);
+            GuiUsageRecipe.usagehandlers.remove(heatRecipeHandler);
+        }
     }
 }
