@@ -39,6 +39,7 @@ package net.dries007.tfcnei;
 import codechicken.nei.api.API;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
+import net.dries007.tfcnei.gui.NEIGuiHandler;
 import net.dries007.tfcnei.recipeHandlers.*;
 import net.minecraftforge.common.config.Configuration;
 
@@ -75,6 +76,8 @@ public class ClientProxy extends CommonProxy
         barrel = cfg.getBoolean("barrel", CATEGORY_GENERAL, true, "");
         alloy = cfg.getBoolean("alloy", CATEGORY_GENERAL, true, "");
         heat = cfg.getBoolean("heat", CATEGORY_GENERAL, true, "");
+
+        API.registerNEIGuiHandler(new NEIGuiHandler());
 
         if (anvil)
         {
