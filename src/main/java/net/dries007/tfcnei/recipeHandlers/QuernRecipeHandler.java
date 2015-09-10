@@ -64,7 +64,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return Reference.ModID + ":" + Reference.AssetPathGui + "gui_quern.png";
+        return Reference.MOD_ID + ":" + Reference.ASSET_PATH_GUI + "gui_quern.png";
     }
 
     @Override
@@ -100,7 +100,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
     public void loadUsageRecipes(ItemStack ingredient)
     {
         for (QuernRecipe recipe : recipeList)
-            if (ingredient.getItem() == TFCItems.Quern || Helper.areItemStacksEqual(ingredient, recipe.getInItem())) arecipes.add(new CachedQuernRecipe(recipe));
+            if (ingredient.getItem() == TFCItems.quern || Helper.areItemStacksEqual(ingredient, recipe.getInItem())) arecipes.add(new CachedQuernRecipe(recipe));
     }
 
     @Override
@@ -141,7 +141,7 @@ public class QuernRecipeHandler extends TemplateRecipeHandler
         @Override
         public PositionedStack getOtherStack()
         {
-            return new PositionedStack(new ItemStack(TFCItems.Quern), 88, 9);
+            return new PositionedStack(new ItemStack(TFCItems.quern), 88, 9);
         }
     }
 }

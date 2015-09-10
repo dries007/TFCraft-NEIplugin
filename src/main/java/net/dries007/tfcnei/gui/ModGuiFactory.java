@@ -36,21 +36,14 @@
 
 package net.dries007.tfcnei.gui;
 
-import com.bioxx.tfc.Reference;
-import com.bioxx.tfc.TerraFirmaCraft;
-import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.client.IModGuiFactory;
-import cpw.mods.fml.client.config.DummyConfigElement;
 import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.IConfigElement;
 import net.dries007.tfcnei.TerraFirmaCraftNEIplugin;
 import net.dries007.tfcnei.util.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
 
-import java.util.List;
 import java.util.Set;
 
 import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;

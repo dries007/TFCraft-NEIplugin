@@ -113,10 +113,10 @@ public class HeatRecipeHandler extends TemplateRecipeHandler
         if (recipeList == null)
         {
             recipeList = HeatRegistry.getInstance().getHeatList();
-            firepit = Item.getItemFromBlock(TFCBlocks.Firepit);
-            grill = Item.getItemFromBlock(TFCBlocks.Grill);
-            forge = Item.getItemFromBlock(TFCBlocks.Forge);
-            crucible = Item.getItemFromBlock(TFCBlocks.Crucible);
+            firepit = Item.getItemFromBlock(TFCBlocks.firepit);
+            grill = Item.getItemFromBlock(TFCBlocks.grill);
+            forge = Item.getItemFromBlock(TFCBlocks.forge);
+            crucible = Item.getItemFromBlock(TFCBlocks.crucible);
         }
         return super.newInstance();
     }
@@ -174,7 +174,7 @@ public class HeatRecipeHandler extends TemplateRecipeHandler
     private boolean isValidForCrucible(HeatIndex recipe)
     {
         Item item = recipe.input.getItem();
-        return ((item instanceof ISmeltable && ((ISmeltable)item).isSmeltable(recipe.input)) || item instanceof ItemMeltedMetal) && item != TFCItems.RawBloom && (item != TFCItems.Bloom || recipe.input.getItemDamage() <= 100) && !TFC_Core.isOreIron(recipe.input);
+        return ((item instanceof ISmeltable && ((ISmeltable)item).isSmeltable(recipe.input)) || item instanceof ItemMeltedMetal) && item != TFCItems.rawBloom && (item != TFCItems.bloom || recipe.input.getItemDamage() <= 100) && !TFC_Core.isOreIron(recipe.input);
     }
 
     public class CachedHeatRecipe extends CachedRecipe
@@ -208,8 +208,8 @@ public class HeatRecipeHandler extends TemplateRecipeHandler
             if (ingred.getItem() instanceof ISmeltable)
             {
                 ISmeltable smelt = (ISmeltable)ingred.getItem();
-                ItemStack smeltedItem = new ItemStack(smelt.GetMetalType(ingred).MeltedItem);
-                int units = smelt.GetMetalReturnAmount(ingred);
+                ItemStack smeltedItem = new ItemStack(smelt.getMetalType(ingred).meltedItem);
+                int units = smelt.getMetalReturnAmount(ingred);
                 smeltedItem.stackSize = units / 100;
                 return smeltedItem;
             }

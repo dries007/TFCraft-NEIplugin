@@ -89,10 +89,10 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
     {
         if (alloyList == null)
         {
-            alloyList = AlloyManager.instance.Alloys;
+            alloyList = AlloyManager.INSTANCE.alloys;
             Metal metal;
-            ItemStack itemStack = new ItemStack(TFCItems.OreChunk);
-            while ((metal = ((ItemOre) TFCItems.OreChunk).GetMetalType(itemStack)) != null)
+            ItemStack itemStack = new ItemStack(TFCItems.oreChunk);
+            while ((metal = ((ItemOre) TFCItems.oreChunk).getMetalType(itemStack)) != null)
             {
                 metalItemMap.put(metal, itemStack.copy());
                 itemStack.setItemDamage(itemStack.getItemDamage() + 1);
@@ -122,10 +122,10 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
     {
         for (Alloy recipe : alloyList)
         {
-            for (AlloyMetal alloyMetal : recipe.AlloyIngred)
+            for (AlloyMetal alloyMetal : recipe.alloyIngred)
             {
-                if (alloyMetal.metalType.MeltedItem == ingredient.getItem() || alloyMetal.metalType.Ingot == ingredient.getItem()) arecipes.add(new CachedAlloyRecipe(recipe));
-                else if (ingredient.getItem() instanceof ItemOre && ((ItemOre) ingredient.getItem()).GetMetalType(ingredient) == alloyMetal.metalType) arecipes.add(new CachedAlloyRecipe(recipe));
+                if (alloyMetal.metalType.meltedItem == ingredient.getItem() || alloyMetal.metalType.ingot == ingredient.getItem()) arecipes.add(new CachedAlloyRecipe(recipe));
+                else if (ingredient.getItem() instanceof ItemOre && ((ItemOre) ingredient.getItem()).getMetalType(ingredient) == alloyMetal.metalType) arecipes.add(new CachedAlloyRecipe(recipe));
             }
         }
     }
@@ -135,7 +135,7 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
     {
         for (Alloy recipe : alloyList)
         {
-            if (recipe.outputType.Ingot == result.getItem() || recipe.outputType.MeltedItem == result.getItem()) arecipes.add(new CachedAlloyRecipe(recipe));
+            if (recipe.outputType.ingot == result.getItem() || recipe.outputType.meltedItem == result.getItem()) arecipes.add(new CachedAlloyRecipe(recipe));
         }
     }
 
@@ -159,13 +159,13 @@ public class AlloyRecipeHandler extends TemplateRecipeHandler
 
         public CachedAlloyRecipe(Alloy recipe)
         {
-            outItem = new PositionedStack(new ItemStack(recipe.outputType.MeltedItem), 10, 10);
+            outItem = new PositionedStack(new ItemStack(recipe.outputType.meltedItem), 10, 10);
             int x = SPACING / 2;
-            for (AlloyMetal alloyMetal : recipe.AlloyIngred)
+            for (AlloyMetal alloyMetal : recipe.alloyIngred)
             {
                 List<ItemStack> list = new LinkedList<>();
-                list.add(new ItemStack(alloyMetal.metalType.MeltedItem));
-                list.add(new ItemStack(alloyMetal.metalType.Ingot));
+                list.add(new ItemStack(alloyMetal.metalType.meltedItem));
+                list.add(new ItemStack(alloyMetal.metalType.ingot));
                 list.addAll(metalItemMap.get(alloyMetal.metalType));
                 ingredients.add(new PositionedStack(list, x += SPACING, 10));
 

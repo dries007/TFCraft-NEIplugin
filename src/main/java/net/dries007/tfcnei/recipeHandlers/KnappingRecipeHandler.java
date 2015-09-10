@@ -63,7 +63,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return Reference.ModID + ":" + Reference.AssetPathGui + "gui_knapping.png";
+        return Reference.MOD_ID + ":" + Reference.ASSET_PATH_GUI + "gui_knapping.png";
     }
 
     @Override
@@ -144,7 +144,7 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
             for (ItemStack inStack : recipe.getRecipeItems())
             {
                 if (inStack == null || flatType != inStack.getItem()) continue;
-                if (flatType == TFCItems.FlatClay)
+                if (flatType == TFCItems.flatClay)
                 {
                     if (ingredient.getItemDamage() == 0 && inStack.getItemDamage() == 1) // Compare to see if the ingredient is normal clay
                         arecipes.add(new CachedKnappingRecipe(recipe));
@@ -173,23 +173,23 @@ public class KnappingRecipeHandler extends TemplateRecipeHandler
             for (ItemStack inStack : inputItems)
             {
                 if (inStack == null) continue;
-                if (inStack.getItem() == TFCItems.FlatClay) // if its clay, we need some special code
+                if (inStack.getItem() == TFCItems.flatClay) // if its clay, we need some special code
                 {
                     if (inStack.getItemDamage() == 1) // Normal clay (damage value 1)
                     {
                         off = new ItemStack(inStack.getItem(), 1, 0); // Dark texture has data value 0
-                        setActualInput(new ItemStack(TFCItems.ClayBall, 5, 0));
+                        setActualInput(new ItemStack(TFCItems.clayBall, 5, 0));
                     }
                     else if (inStack.getItemDamage() == 3) // Fire clay (damage value 3)
                     {
                         off = new ItemStack(inStack.getItem(), 1, 2); // Dark texture has data value 3
-                        setActualInput(new ItemStack(TFCItems.ClayBall, 5, 1));
+                        setActualInput(new ItemStack(TFCItems.clayBall, 5, 1));
                     }
                 }
                 else // If not clay (aka Leather or stone) add the recipe without a 'dark' texture in place.
                 {
-                    if (inStack.getItem() == TFCItems.FlatLeather) setActualInput(new ItemStack(TFCItems.Leather));
-                    else if (inStack.getItem() == TFCItems.FlatRock) setActualInput(new ItemStack(TFCItems.LooseRock, 1, inStack.getItemDamage()));
+                    if (inStack.getItem() == TFCItems.flatLeather) setActualInput(new ItemStack(TFCItems.leather));
+                    else if (inStack.getItem() == TFCItems.flatRock) setActualInput(new ItemStack(TFCItems.looseRock, 1, inStack.getItemDamage()));
                 }
                 break;
             }

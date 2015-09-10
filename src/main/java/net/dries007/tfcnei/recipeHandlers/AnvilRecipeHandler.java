@@ -119,7 +119,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             for (AnvilRecipe recipe : recipeList) arecipes.add(new CachedAnvilRecipe(HAMMER_NORMAL, recipe));
             for (AnvilRecipe recipe : weldRecipeList) arecipes.add(new CachedAnvilRecipe(HAMMER_WELD, recipe));
         }
-        else if (ingredient.getItem() == TFCItems.Powder && ingredient.getItemDamage() == 0)
+        else if (ingredient.getItem() == TFCItems.powder && ingredient.getItemDamage() == 0)
         {
             for (AnvilRecipe recipe : weldRecipeList) arecipes.add(new CachedAnvilRecipe(WELD, recipe));
         }
@@ -148,9 +148,9 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             recipeList = AnvilManager.getInstance().getRecipeList();
             weldRecipeList = AnvilManager.getInstance().getWeldRecipeList();
 
-            hammers = new ItemStack[Recipes.Hammers.length];
+            hammers = new ItemStack[Recipes.hammers.length];
             for (int i = 0; i < hammers.length; i++)
-                hammers[i] = new ItemStack(Recipes.Hammers[i]);
+                hammers[i] = new ItemStack(Recipes.hammers[i]);
         }
         return super.newInstance();
     }
@@ -213,7 +213,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
         {
             this.type = type;
             StringBuilder sb = new StringBuilder();
-            for (AnvilReq a : AnvilReq.rules)
+            for (AnvilReq a : AnvilReq.RULES)
             {
                 if (a.Tier != anvilreq) continue;
                 sb.append(a.Name).append(" anvil or better");
@@ -246,7 +246,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler
             List<PositionedStack> stacks = new ArrayList<>();
 
             stacks.add(new PositionedStack(hammers, -14, 100, false));
-            if (type.isWeld()) stacks.add(new PositionedStack(new ItemStack(TFCItems.Powder), 164, 100));
+            if (type.isWeld()) stacks.add(new PositionedStack(new ItemStack(TFCItems.powder), 164, 100));
             return stacks;
         }
     }
