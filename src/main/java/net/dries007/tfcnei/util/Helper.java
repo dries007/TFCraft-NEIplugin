@@ -89,7 +89,9 @@ public class Helper
             if (data.fluid.isFluidEqual(fluidStack))
             {
                 ItemStack itemStack = data.filledContainer.copy();
-                itemStack.stackSize = fluidStack.amount / FluidContainerRegistry.getContainerCapacity(data.fluid, data.emptyContainer);
+                int cap = FluidContainerRegistry.getContainerCapacity(data.fluid, data.emptyContainer);
+                if (cap == 0) itemStack.stackSize = 0;
+                else itemStack.stackSize = fluidStack.amount / cap;
                 itemStacks.add(itemStack);
             }
         }
